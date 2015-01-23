@@ -16,7 +16,8 @@ public class PlayerInput : MonoBehaviour
 
     protected void Start()
     {
-        _inputDevice = InputManager.Devices[0];        
+        if(_inputDevice == null)
+            _inputDevice = InputManager.Devices[0];        
     }
 
     protected void Update()
@@ -28,5 +29,10 @@ public class PlayerInput : MonoBehaviour
 
         if (_inputDevice.Action2.WasPressed)
             _playerManager.PickupDropItem();
+    }
+
+    public void SetController(InputDevice inputDevice)
+    {
+        _inputDevice = inputDevice;
     }
 }
