@@ -6,6 +6,8 @@ using System.Collections;
 public class CharacterController : MonoBehaviour
 {
     public float MoveSpeed = 5;
+    public float Acceleration = 5;
+    public bool ForceDiagonalMovement;
 
     private Rigidbody2D _rigid;
     private Vector2 _desiredSpeed;
@@ -17,11 +19,31 @@ public class CharacterController : MonoBehaviour
 
     public void SetDesiredSpeed(Vector2 speed)
     {
-        _desiredSpeed = speed;
+        _desiredSpeed = speed * MoveSpeed;
+
+
+        if (ForceDiagonalMovement)
+        {
+            var x = Mathf.Abs(_desiredSpeed.x);
+            var y = Mathf.Abs(_desiredSpeed.y);
+            if (x < y / 2)
+                _desiredSpeed.x = 0;
+            else if (y < x / 2)
+                _desiredSpeed.y = 0;
+            else
+            {
+                _desiredSpeed.x *= (y + x) / (x + 1);
+                _desiredSpeed.y *= (y + x) / (y + 1);
+            }
+        }
     }
 
     protected void FixedUpdate()
     {
-        _rigid.velocity = _desiredSpeed;
+        var speed = _rigid.velocity;
+
+        speed += Vector2.ClampMagnitude(_desiredSpeed - speed, Acceleration*Time.fixedDeltaTime);
+
+        _rigid.velocity = speed;
     }
 }
