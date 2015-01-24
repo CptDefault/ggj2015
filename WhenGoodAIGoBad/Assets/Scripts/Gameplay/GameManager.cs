@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour
 
     public GameObject PlayerPrefab;
 
+    public Transform[] SpawnPoints;
+
     public Door[] InterestingDoors;
 
     public float RandomDamageTimer = 10;
@@ -37,6 +39,8 @@ public class GameManager : MonoBehaviour
 	    {
 	        var inputDevice = InputManager.Devices[i];
 	        var playerGO = (GameObject)Instantiate(PlayerPrefab);
+
+	        playerGO.transform.position = SpawnPoints[i % SpawnPoints.Length].position;
 
 	        playerGO.GetComponent<PlayerInput>().SetController(inputDevice);
 	    }

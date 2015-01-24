@@ -25,6 +25,10 @@ public class AIText : MonoBehaviour {
 		_showingText = "";
 		label.text = "";
 		scale.ResetToBeginning();
+		AudioManager.PlayAnnouncement();
+		
+		yield return new WaitForSeconds(2f);
+		
 		scale.PlayForward();
 		yield return new WaitForSeconds(0.5f);
 

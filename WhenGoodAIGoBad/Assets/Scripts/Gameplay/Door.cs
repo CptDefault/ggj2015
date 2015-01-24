@@ -6,16 +6,23 @@ public class Door : MonoBehaviour, ITraversable
 {
     public Room[] Rooms;
 
+    public SpriteRenderer FrontRenderer;
+    public SpriteRenderer[] BackRenderers;
+    public Collider2D DoorCollider;
+
+    public Vector2 Center;
+
+    public Vector2 Facing = Vector2.up;
+
     public AudioClipContainer LockSound;
     public AudioClipContainer OpenSound;
 
-    private Collider2D _collider;
-    private SpriteRenderer _spriteRenderer;
     private int _playerCount;
     private bool _locked;
     private bool _open;
     private float _unlockTime;
     private bool _aiOverride;
+    private bool _supressSound;
 
     protected void Awake()
     {
@@ -23,9 +30,16 @@ public class Door : MonoBehaviour, ITraversable
         {
             room.AddDoor(this);
         }
+        if (DoorCollider == null)
+            DoorCollider = GetComponent<Collider2D>();
+        Center = DoorCollider.bounds.center;
+    }
 
-        _collider = GetComponent<Collider2D>();
-        _spriteRenderer = GetComponent<SpriteRenderer>();
+    protected void Start()
+    {
+        _supressSound = true;
+        Open = true;
+        _supressSound = false;
     }
 
 #if UNITY_EDITOR
@@ -33,6 +47,9 @@ public class Door : MonoBehaviour, ITraversable
     {
         foreach (var room in Rooms)
         {
+            if(room == null)
+                continue;
+            
             Gizmos.DrawLine(transform.position, room.transform.position);
             UnityEditor.Handles.color = Color.red;
             UnityEditor.Handles.Label((room.transform.position) + Vector3.back, (RoomDistance(room) * 100).ToString());
@@ -44,6 +61,13 @@ public class Door : MonoBehaviour, ITraversable
         print("Resetting!");
         Rooms = FindObjectsOfType<Room>().OrderBy(room => RoomDistance(room)).Take(2).ToArray();
 
+    }
+
+    [ContextMenu("Find Rooms")]
+    protected void FindRooms()
+    {
+        print("Finding Rooms!");
+        Rooms = FindObjectsOfType<Room>().OrderBy(room => RoomDistance(room)).Take(2).ToArray();
     }
 
     private float RoomDistance(Room room)
@@ -97,10 +121,7 @@ public class Door : MonoBehaviour, ITraversable
         {
             _locked = value;
 
-            Open = _playerCount > 0 && !_locked;
-
-
-            _spriteRenderer.color = value ? Color.red : Color.white;
+            Open = !_locked || _aiOverride;
         }
     }
 
@@ -112,12 +133,19 @@ public class Door : MonoBehaviour, ITraversable
             if (_locked && !_aiOverride)
                 value = false;
 
-            if(_open != value)
+            if(_open != value && !_supressSound)
                 (value ? OpenSound : LockSound).Play();
 
             _open = value;
-            _collider.enabled = !_open;
-            _spriteRenderer.enabled = !_open;
+
+            if (FrontRenderer != null) FrontRenderer.enabled = !_open;
+
+            foreach (var backRenderer in BackRenderers)
+            {
+                backRenderer.enabled = _open;
+            }
+
+            if (DoorCollider != null) DoorCollider.enabled = !_open;
         }
     }
 
@@ -131,7 +159,7 @@ public class Door : MonoBehaviour, ITraversable
         if (col.GetComponent<AIController>() != null)
             _aiOverride = true;
 
-        Open = _playerCount > 0 && !_locked || _aiOverride;
+        Open = !_locked || _aiOverride;
     }
     protected void OnTriggerExit2D(Collider2D col)
     {
@@ -143,7 +171,7 @@ public class Door : MonoBehaviour, ITraversable
         if (col.GetComponent<AIController>() != null)
             _aiOverride = false;
 
-        Open = _playerCount > 0 && !_locked || _aiOverride;
+        Open = !_locked || _aiOverride;
     }
 
     public void LockFor(float duration)
