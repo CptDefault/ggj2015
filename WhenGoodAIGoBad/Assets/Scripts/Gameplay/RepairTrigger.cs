@@ -21,6 +21,8 @@ public class RepairTrigger : MonoBehaviour {
     private float _lastRepairTime;
     private AudioSource _audio;
 
+    public GameObject ExplosionPrefab;
+
 
     void Start () {
 		if(myBar == null)
@@ -67,8 +69,11 @@ public class RepairTrigger : MonoBehaviour {
                 AudioManager.PlayAlarm();
             }
 
-            if (Health < 0)
-                ExplodeSound.Play();
+            if (Health < 0) {
+            	ExplodeSound.Play();
+            	Destroy(GameObject.Instantiate(ExplosionPrefab), 2f);
+            }
+                
         }
     }
 
