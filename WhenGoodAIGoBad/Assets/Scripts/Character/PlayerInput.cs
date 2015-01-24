@@ -84,6 +84,8 @@ public class PlayerInput : MonoBehaviour
             LeanTween.scale(BoomBox, new Vector3(0.23f, 0.065f, 1) , 0.25f).setEase(LeanTweenType.easeOutElastic);
 			//LeanTween.scale(BoomBox, new Vector3(0.23f, 0.065f, 1) , 0.25f).setLoopPingPong().setEase(LeanTweenType.easeOutCubic);
             BoomBox.audio.Play();
+
+            //FindObjectOfType<GameOver>().ActivateGameOver();
         } else if(_inputDevice.Action4.IsPressed) {
             _characterController.SetDesiredSpeed(Vector2.zero);
             return;
@@ -138,12 +140,15 @@ public class PlayerInput : MonoBehaviour
             }
         }
 
+        // EXTINGUISHER
 		if(_playerManager.CarriedTool != null && _playerManager.CarriedTool.Type == Tool.ToolType.Extinguisher) {
             if(_inputDevice.Action1.WasPressed) {
                 ExtinguisherParticle.Play();
+                ExtinguisherParticle.audio.Play();
                 //play a sound
                 
             } else if (_inputDevice.Action1.IsPressed) {
+                _characterController.SetDesiredSpeed(Vector2.zero);
                 RaycastHit2D hit = Physics2D.Raycast(transform.position, ExtinguisherRayCast.position-transform.position, 4f, 1 << 8);
                 if (hit.collider != null) {
                     _sprite.enabled = true;
@@ -154,6 +159,7 @@ public class PlayerInput : MonoBehaviour
             }
             else if (_inputDevice.Action1.WasReleased) {
 				ExtinguisherParticle.Stop ();
+                ExtinguisherParticle.audio.Stop ();
 			}
         }
         
