@@ -11,6 +11,7 @@ public class CharacterController : MonoBehaviour
 
     private Rigidbody2D _rigid;
     private Vector2 _desiredSpeed;
+    public Room Room { get; private set; }
 
     protected void Awake()
     {
@@ -45,5 +46,14 @@ public class CharacterController : MonoBehaviour
         speed += Vector2.ClampMagnitude(_desiredSpeed - speed, Acceleration*Time.fixedDeltaTime);
 
         _rigid.velocity = speed;
+    }
+
+    protected void OnTriggerEnter2D(Collider2D col)
+    {
+        var room = col.GetComponent<Room>();
+        if (room != null)
+        {
+            Room = room;
+        }
     }
 }

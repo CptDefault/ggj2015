@@ -11,6 +11,13 @@ public class GameManager : MonoBehaviour
 
     public GameObject PlayerPrefab;
 
+    public Door[] InterestingDoors;
+
+    public float RandomDamageTimer = 10;
+    public float RandomDamageAmount = 0.2f;
+
+
+
     public static void RegisterRoom(Room room)
     {
         if (Instance == null)

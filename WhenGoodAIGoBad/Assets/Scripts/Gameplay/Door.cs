@@ -5,11 +5,17 @@ using System.Collections;
 public class Door : MonoBehaviour, ITraversable
 {
     public Room[] Rooms;
+
+    public AudioClipContainer LockSound;
+    public AudioClipContainer OpenSound;
+
     private Collider2D _collider;
     private SpriteRenderer _spriteRenderer;
     private int _playerCount;
     private bool _locked;
     private bool _open;
+    private float _unlockTime;
+    private bool _aiOverride;
 
     protected void Awake()
     {
@@ -91,6 +97,9 @@ public class Door : MonoBehaviour, ITraversable
         {
             _locked = value;
 
+            Open = _playerCount > 0 && !_locked;
+
+
             _spriteRenderer.color = value ? Color.red : Color.white;
         }
     }
@@ -100,6 +109,12 @@ public class Door : MonoBehaviour, ITraversable
         get { return _open; }
         set
         {
+            if (_locked && !_aiOverride)
+                value = false;
+
+            if(_open != value)
+                (value ? OpenSound : LockSound).Play();
+
             _open = value;
             _collider.enabled = !_open;
             _spriteRenderer.enabled = !_open;
@@ -108,18 +123,46 @@ public class Door : MonoBehaviour, ITraversable
 
     protected void OnTriggerEnter2D(Collider2D col)
     {
-        var player = col.GetComponent<PlayerManager>();
+        var player = col.GetComponent<CharacterController>();
 
-        if (player != null && !_locked)
+        if (player != null)
             _playerCount++;
-        Open = _playerCount > 0;
+
+        if (col.GetComponent<AIController>() != null)
+            _aiOverride = true;
+
+        Open = _playerCount > 0 && !_locked || _aiOverride;
     }
     protected void OnTriggerExit2D(Collider2D col)
     {
-        var player = col.GetComponent<PlayerManager>();
+        var player = col.GetComponent<CharacterController>();
 
         if (player != null)
-            _playerCount--; 
-        Open = _playerCount > 0;
+            _playerCount--;
+
+        if (col.GetComponent<AIController>() != null)
+            _aiOverride = false;
+
+        Open = _playerCount > 0 && !_locked || _aiOverride;
+    }
+
+    public void LockFor(float duration)
+    {
+        Locked = true;
+        StartCoroutine(UnlockAtTime(Time.time + duration));
+    }
+
+    private IEnumerator UnlockAtTime(float t)
+    {
+        if (_unlockTime > 0)
+        {
+            _unlockTime = Mathf.Max(_unlockTime, t);
+            yield break;
+        }
+        _unlockTime = t;
+        while (Time.time < _unlockTime)
+            yield return null;
+        Locked = false;
+        _unlockTime = -1;
     }
 }
