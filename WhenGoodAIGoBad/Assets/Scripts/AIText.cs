@@ -24,9 +24,10 @@ public class AIText : MonoBehaviour {
 	IEnumerator ShowText() {
 		_showingText = "";
 		label.text = "";
-		scale.ResetToBeginning();
+		//scale.ResetToBeginning();
+		//label.transform.localScale = new Vector3(0, 0.25f, 1);
 		AudioManager.PlayAnnouncement();
-		
+
 		yield return new WaitForSeconds(2f);
 		
 		scale.PlayForward();

@@ -188,11 +188,11 @@ public class PlayerInput : MonoBehaviour
         _inputDevice = inputDevice;
     }
 
-    public void InitRepairs(RepairTrigger machine, bool canRepair) {
+    public void InitRepairs(RepairTrigger machine, bool canRepair, Tool.ToolType toolRequired) {
         _machine = machine;
         _canRepair = canRepair;
 
-        if(_canRepair)
+        if(_canRepair && _playerManager.CarriedTool != null && _playerManager.CarriedTool.Type == toolRequired)
             _playerManager.TipLabel.text = "(A) Repair room";
         else
             _playerManager.TipLabel.text = "";

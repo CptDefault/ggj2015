@@ -46,14 +46,14 @@ public class RepairTrigger : MonoBehaviour {
 	    {
 	        var playerInput = other.gameObject.GetComponent<PlayerInput>();
 	        if(playerInput != null)
-                playerInput.InitRepairs(this, true);
+                playerInput.InitRepairs(this, true, ToolRequired);
 	    }
 	}
 
 	protected void OnTriggerExit2D(Collider2D other) {
 		var playerInput = other.gameObject.GetComponent<PlayerInput>();
 	    if(playerInput != null)
-            other.gameObject.GetComponent<PlayerInput>().InitRepairs(null, false);
+            other.gameObject.GetComponent<PlayerInput>().InitRepairs(null, false, ToolRequired);
 		
 	}
 
