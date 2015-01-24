@@ -115,11 +115,11 @@ public class PlayerInput : MonoBehaviour
 				    _machine.Repair();
                     _repairTimer = 0;
                 }
-            }
 
-            if(_machine.Health >= 0.99f) {
-                _machine.CompleteRepair();
-                _playerManager.ConsumeTool();
+                if(_machine.Health >= 0.99f) {
+                    _machine.CompleteRepair();
+                    _playerManager.ConsumeTool();
+                }
             }
         }
 
@@ -131,6 +131,7 @@ public class PlayerInput : MonoBehaviour
             } else if (_inputDevice.Action1.IsPressed) {
                 RaycastHit2D hit = Physics2D.Raycast(transform.position, ExtinguisherRayCast.position-transform.position, 4f, 1 << 8);
                 if (hit.collider != null) {
+                    _sprite.enabled = true;
 					hit.collider.gameObject.collider2D.enabled = false;
 					LeanTween.alpha(hit.collider.gameObject, 0, 0.5f);
                     Destroy(hit.collider.gameObject, 0.6f);
@@ -161,7 +162,7 @@ public class PlayerInput : MonoBehaviour
     }
 
     void GetStunned(Vector3 pos) {
-		rigidbody2D.AddForce (500 * (transform.position - pos));
+		rigidbody2D.AddForce (400 * (transform.position - pos));
         _sprite.enabled = true;
 
         if(_stunned && _stunTimer >= 1f) {
@@ -174,8 +175,22 @@ public class PlayerInput : MonoBehaviour
     }
 
     private void Die() {
-        audio.PlayOneShot(dieSound);
-        _alive = false;
+        if(_alive) {
+            audio.PlayOneShot(dieSound);
+            _alive = false;
+            CloneBay.Instance.RespawnPlayer(this);
+
+            // DROP IT LIKE ITS HOT
+            if(_playerManager.CarriedTool != null) 
+                _playerManager.PickupDropItem();
+        }
+    }
+
+    public void Respawn() {
+        _alive = true;
+        _sprite.enabled = true;
+        _stunTimer = 0;
+        _flashTimer = 0;
     }
 
     /*private void DetermineHeading() {
