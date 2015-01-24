@@ -72,19 +72,19 @@ public class PlayerInput : MonoBehaviour
         }
 
 		if(_playerManager.CarriedTool != null && _playerManager.CarriedTool.Type == Tool.ToolType.Extinguisher) {
-            if(_inputDevice.Action3.WasPressed) {
+            if(_inputDevice.Action1.WasPressed) {
                 ExtinguisherParticle.Play();
                 //play a sound
                 
-            } else if (_inputDevice.Action3.IsPressed) {
-                RaycastHit2D hit = Physics2D.Raycast(transform.position, ExtinguisherRayCast.position, 4f, 1 << 8);
+            } else if (_inputDevice.Action1.IsPressed) {
+                RaycastHit2D hit = Physics2D.Raycast(transform.position, ExtinguisherRayCast.position-transform.position, 4f, 1 << 8);
                 if (hit.collider != null) {
 					hit.collider.gameObject.collider2D.enabled = false;
 					LeanTween.alpha(hit.collider.gameObject, 0, 0.5f);
                     Destroy(hit.collider.gameObject, 0.6f);
                 }
             }
-            else if (_inputDevice.Action3.WasReleased) {
+            else if (_inputDevice.Action1.WasReleased) {
 				ExtinguisherParticle.Stop ();
 			}
         }
