@@ -91,6 +91,10 @@ public class PlayerInput : MonoBehaviour
 				ExtinguisherParticle.Stop ();
 			}
         }
+
+        if(_inputDevice.Action4.WasReleased) {
+            AIText.ShowText("I am a little teapot, short and stout, here is my handle, here is my spout");
+        }
         
     }
 

@@ -152,7 +152,7 @@ public class TypewriterEffect : MonoBehaviour
 
 			// Periods and end-of-line characters should pause for a longer time.
 			float delay = 1f / charsPerSecond;
-			char c = (lastOffset < mFullText.Length) ? mFullText[lastOffset] : '\n';
+			char c = (lastOffset < mFullText.Length) ? mFullText[lastOffset] : ' ';
 
 			if (c == '\n')
 			{
