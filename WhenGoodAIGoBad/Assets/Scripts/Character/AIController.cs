@@ -15,6 +15,14 @@ public class AIController : MonoBehaviour
         LockDoors,
     }
 
+    public enum DoorStage
+    {
+        Start,
+        Door,
+        Pass,
+        Done
+    }
+
     private List<ITraversable> _path;
     private int _pathInd;
     private CharacterController _characterController;
@@ -26,8 +34,10 @@ public class AIController : MonoBehaviour
     private double _waitUntilTime;
     private bool _passingDoor;
     private Vector3 _debug;
-    private Vector2 _doorVelocity;
+    private Vector3 _doorVelocity;
     private bool _approachingDoor;
+    private DoorStage _doorStage;
+    private Color _col;
 
     protected void Awake()
     {
@@ -45,8 +55,13 @@ public class AIController : MonoBehaviour
 
     protected void OnDrawGizmos()
     {
-        if(Application.isPlaying)
+        if (Application.isPlaying)
+        {
             Gizmos.DrawLine(transform.position, _debug);
+            Gizmos.color = _col;
+            Gizmos.DrawLine(_debug, _debug + _doorVelocity);
+        }
+
     }
 
 
@@ -63,34 +78,39 @@ public class AIController : MonoBehaviour
             _path = AIPathfinding.PathToPoint(transform.position, _target.transform.position);
             _pathInd = 0;
             _goal = Goal.BombTarget;
+
+            _doorStage = DoorStage.Start;
+            var dr = _path[_pathInd] as Door;
+            if (dr != null)
+                _doorVelocity = (Vector3.Dot(dr.DoorCollider.bounds.center - transform.position, dr.Facing) * dr.Facing).normalized;
         }
 
         var target = ((MonoBehaviour) _path[_pathInd]).transform.position;
         var d = _path[_pathInd] as Door;
+        _col = Color.red;
         if (d != null)
         {
-            target = d.DoorCollider.bounds.center;
+            target = d.Center;
+            _col = Color.green;
 
-            if (!_approachingDoor)
+            switch (_doorStage)
             {
-                _doorVelocity = target - transform.position;
-                _approachingDoor = true;
-            }
-            if (_approachingDoor && ! _passingDoor)
-            {
-                target += (Vector3)d.Facing.normalized * 1 * -Mathf.Sign(Vector2.Dot(d.Facing, _doorVelocity));
-                print("Approaching");
-            }
-            if (_passingDoor || Vector3.SqrMagnitude(transform.position - target) < 0.4f)
-            {
-                print("Passing" + (Vector3)d.Facing.normalized + " : " + Mathf.Sign(Vector2.Dot(d.Facing, _doorVelocity)));
-                _passingDoor = true;
-                target = d.DoorCollider.bounds.center;
-                target += (Vector3)d.Facing.normalized * 1 * Mathf.Sign(Vector2.Dot(d.Facing, _doorVelocity));
-            }
-            else if (!_approachingDoor)
-            {
-                print("Nothing special");                
+                case DoorStage.Start:
+                    target -= _doorVelocity;
+                    if(Vector3.SqrMagnitude(transform.position - target) < 0.4f)
+                        _doorStage = DoorStage.Door;
+                    break;
+                case DoorStage.Door:
+                    if (Vector3.SqrMagnitude(transform.position - target) < 0.4f)
+                        _doorStage = DoorStage.Pass;
+                    break;
+                case DoorStage.Pass:
+                    target += _doorVelocity;
+                    if (Vector3.SqrMagnitude(transform.position - target) < 0.4f)
+                        _doorStage = DoorStage.Done;
+                    break;
+                case DoorStage.Done:
+                    break;
             }
         }
         Vector2 toTarget = target - transform.position;
@@ -99,11 +119,21 @@ public class AIController : MonoBehaviour
 
         _characterController.SetDesiredSpeed(d == null ? toTarget.normalized : Vector2.ClampMagnitude(toTarget,1));
 
-        if (Vector3.SqrMagnitude(transform.position - target) < (d == null ? 0.4f : 0.1f))
+        if (Vector3.SqrMagnitude(transform.position - target) < 0.4f && (d == null || _doorStage == DoorStage.Done))
         {
             _pathInd++;
             _passingDoor = false;
             _approachingDoor = false;
+
+            _doorStage = DoorStage.Start;
+            if (_pathInd < _path.Count)
+            {
+                var dr = _path[_pathInd] as Door;
+                if (dr != null)
+                    _doorVelocity =
+                        (Vector3.Dot(dr.DoorCollider.bounds.center - transform.position, dr.Facing)*dr.Facing)
+                            .normalized;
+            }
         }
 
         if (_pathInd >= _path.Count)

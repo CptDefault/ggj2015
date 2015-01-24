@@ -121,8 +121,11 @@ public class PlayerInput : MonoBehaviour
         }
             
 
-        if(_inputDevice.Action4.WasPressed)
-            FindObjectOfType<AIController>().PlayerDanced(_playerManager);
+        if (_inputDevice.Action4.WasPressed)
+        {
+            var aiController = FindObjectOfType<AIController>();
+            if (aiController != null) aiController.PlayerDanced(_playerManager);
+        }
 
         if(_canRepair && _playerManager.CarriedTool != null && _machine != null) {
             

@@ -10,6 +10,8 @@ public class Door : MonoBehaviour, ITraversable
     public SpriteRenderer[] BackRenderers;
     public Collider2D DoorCollider;
 
+    public Vector2 Center;
+
     public Vector2 Facing = Vector2.up;
 
     public AudioClipContainer LockSound;
@@ -20,6 +22,7 @@ public class Door : MonoBehaviour, ITraversable
     private bool _open;
     private float _unlockTime;
     private bool _aiOverride;
+    private bool _supressSound;
 
     protected void Awake()
     {
@@ -29,12 +32,14 @@ public class Door : MonoBehaviour, ITraversable
         }
         if (DoorCollider == null)
             DoorCollider = GetComponent<Collider2D>();
-
+        Center = DoorCollider.bounds.center;
     }
 
     protected void Start()
     {
-        Open = false;        
+        _supressSound = true;
+        Open = true;
+        _supressSound = false;
     }
 
 #if UNITY_EDITOR
@@ -116,7 +121,7 @@ public class Door : MonoBehaviour, ITraversable
         {
             _locked = value;
 
-            Open = _playerCount > 0 && !_locked;
+            Open = !_locked || _aiOverride;
         }
     }
 
@@ -128,10 +133,9 @@ public class Door : MonoBehaviour, ITraversable
             if (_locked && !_aiOverride)
                 value = false;
 
-            if(_open != value)
+            if(_open != value && !_supressSound)
                 (value ? OpenSound : LockSound).Play();
 
-            print("Opening Door: " + value);
             _open = value;
 
             if (FrontRenderer != null) FrontRenderer.enabled = !_open;
@@ -155,7 +159,7 @@ public class Door : MonoBehaviour, ITraversable
         if (col.GetComponent<AIController>() != null)
             _aiOverride = true;
 
-        Open = _playerCount > 0 && !_locked || _aiOverride;
+        Open = !_locked || _aiOverride;
     }
     protected void OnTriggerExit2D(Collider2D col)
     {
@@ -167,7 +171,7 @@ public class Door : MonoBehaviour, ITraversable
         if (col.GetComponent<AIController>() != null)
             _aiOverride = false;
 
-        Open = _playerCount > 0 && !_locked || _aiOverride;
+        Open = !_locked || _aiOverride;
     }
 
     public void LockFor(float duration)
