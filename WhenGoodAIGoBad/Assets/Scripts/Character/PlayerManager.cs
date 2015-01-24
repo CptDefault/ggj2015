@@ -6,6 +6,7 @@ public class PlayerManager : MonoBehaviour
     private Tool _overTool;
     private Tool _carriedTool;
 
+    public Tool CarriedTool {get { return _carriedTool;} }
 
     public void PickupDropItem()
     {
@@ -40,5 +41,10 @@ public class PlayerManager : MonoBehaviour
         {
             _overTool = null;
         }
+    }
+
+    public void ConsumeTool() {
+        Destroy(_carriedTool.gameObject);
+        _carriedTool = null;
     }
 }
