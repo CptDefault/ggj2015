@@ -20,6 +20,9 @@ public class PlayerInput : MonoBehaviour
     // Heading
     private Quaternion _heading;
 
+    // Dancing
+    public GameObject BoomBox;
+
     protected void Awake()
     {
         _characterController = GetComponent<CharacterController>();
@@ -32,13 +35,26 @@ public class PlayerInput : MonoBehaviour
             _inputDevice = InputManager.Devices[0]; 
 
         ExtinguisherParticle.Stop();       
+        BoomBox.SetActive(false);
     }
 
     protected void Update()
     {
-        // determine heading
-        //if(_inputDevice.LeftStick.Vector != Vector2.zero)
-        //    DetermineHeading();
+        // start dancing
+        if(_inputDevice.Action4.WasPressed) {
+            //summon boombox
+            BoomBox.SetActive(true);
+            BoomBox.transform.localScale = Vector3.zero;
+            LeanTween.scale(BoomBox, new Vector3(0.23f, 0.065f, 1) , 0.25f).setEase(LeanTweenType.easeOutElastic);
+        } else if(_inputDevice.Action4.IsPressed) {
+            _characterController.SetDesiredSpeed(Vector2.zero);
+            return;
+        }
+        else if (_inputDevice.Action4.WasReleased) {
+            BoomBox.SetActive(false);
+        }
+
+
 
         if(_inputDevice.LeftStick.Vector.magnitude > 0.3f) {
             float heading = Mathf.Atan2(_inputDevice.LeftStick.Vector.x,_inputDevice.LeftStick.Vector.y);
@@ -90,10 +106,6 @@ public class PlayerInput : MonoBehaviour
             else if (_inputDevice.Action1.WasReleased) {
 				ExtinguisherParticle.Stop ();
 			}
-        }
-
-        if(_inputDevice.Action4.WasReleased) {
-            AIText.ShowText("I am a little teapot, short and stout, here is my handle, here is my spout");
         }
         
     }
