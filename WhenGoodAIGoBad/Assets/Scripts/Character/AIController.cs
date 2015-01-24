@@ -9,6 +9,7 @@ public class AIController : MonoBehaviour
     private int _pathInd;
     private CharacterController _characterController;
 
+    public Transform TestThingy;
 
     protected void Awake()
     {
@@ -20,12 +21,17 @@ public class AIController : MonoBehaviour
         if (_path == null || _pathInd >= _path.Count)
         {
             var room = GameManager.Instance.Rooms[Random.Range(0, GameManager.Instance.Rooms.Count)];
-            AIPathfinding.PathToPoint(transform.position, room.transform.position);
+            _path = AIPathfinding.PathToPoint(transform.position, room.transform.position);
             _pathInd = 0;
         }
+        TestThingy = ((MonoBehaviour)_path[_pathInd]).transform;
 
-        Vector2 toTarget = ((MonoBehaviour)_path[_pathInd]).transform.position - transform.position;
+        var target = ((MonoBehaviour) _path[_pathInd]).transform.position;
+        Vector2 toTarget = target - transform.position;
 
-        _characterController.SetDesiredSpeed(Vector2.ClampMagnitude(toTarget, 1));
+        _characterController.SetDesiredSpeed(toTarget.normalized);
+
+        if (Vector3.SqrMagnitude(transform.position - target) < 0.2f)
+            _pathInd++;
     }
 }

@@ -38,6 +38,7 @@ public static class AIPathfinding
                 return node.Path;
 
             frontier.Remove(node);
+            closed.Add(node.Room);
 
             foreach (var door in node.Room.Doors)
             {
