@@ -8,7 +8,9 @@ public class HealthBar : MonoBehaviour {
 	// Use this for initialization;
 
 	public void SetHealth(float amount) {
+        gameObject.SetActive(amount < 0.99f);
 		sprite.fillAmount = amount;
+
 	}
 	
 

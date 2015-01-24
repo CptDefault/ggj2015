@@ -3,6 +3,9 @@ using System.Collections;
 
 public class PlayerManager : MonoBehaviour
 {
+    public AudioClipContainer PickUpItem;
+    public AudioClipContainer DropItem;
+
     private Tool _overTool;
     private Tool _carriedTool;
 
@@ -16,11 +19,13 @@ public class PlayerManager : MonoBehaviour
             _carriedTool.Drop(transform.position);
             _overTool = _carriedTool;
             _carriedTool = null;
+            DropItem.Play();
         }
         else if (_overTool && !_overTool.Carried)
         {
             _carriedTool = _overTool;
             _carriedTool.PickUp(transform);
+            PickUpItem.Play();
         }
     }
 

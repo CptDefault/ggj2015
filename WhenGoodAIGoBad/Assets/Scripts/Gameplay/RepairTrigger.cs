@@ -7,12 +7,22 @@ public class RepairTrigger : MonoBehaviour {
 
 	public GameObject HealthBarPrefab;
 	public float Health = 1;
-	public HealthBar myBar; 
+	public HealthBar myBar;
+
+    public float BurnTime = 10;
+    public float RepairTime = 8;
+
+    public AudioClipContainer RepairSound;
+    public AudioClipContainer RepairEndSound;
+    public AudioClipContainer ExplodeSound;
 
 	public Action<float> OnIncrementHealth;
+    private bool _repairing;
+    private float _lastRepairTime;
+    private AudioSource _audio;
 
 
-	void Start () {
+    void Start () {
 		if(myBar == null)
 			myBar = (GameObject.Instantiate(HealthBarPrefab) as GameObject).GetComponent<HealthBar>();
 
@@ -29,26 +39,74 @@ public class RepairTrigger : MonoBehaviour {
 		myBar.transform.localPosition = screenPos;
 	}
 
-	void OnTriggerEnter2D(Collider2D other) {
-	    if(other.gameObject.tag == "Player" && Health < 1f){
-	    	other.gameObject.GetComponent<PlayerInput>().InitRepairs(this, true);
+	protected void OnTriggerEnter2D(Collider2D other) {
+	    if(Health < 1f)
+	    {
+	        var playerInput = other.gameObject.GetComponent<PlayerInput>();
+	        if(playerInput != null)
+                playerInput.InitRepairs(this, true);
 	    }
 	}
 
-	void OnTriggerExit2D(Collider2D other) {
-		if(other.gameObject.tag == "Player"){
-			other.gameObject.GetComponent<PlayerInput>().InitRepairs(null, false);
-		}
+	protected void OnTriggerExit2D(Collider2D other) {
+		var playerInput = other.gameObject.GetComponent<PlayerInput>();
+	    if(playerInput != null)
+            other.gameObject.GetComponent<PlayerInput>().InitRepairs(null, false);
+		
 	}
+
+    protected void Update()
+    {
+        if (Health < 0.95f && Health > 0)
+        {
+            Health -= 1/BurnTime/2 * Time.deltaTime;
+            OnIncrementHealth(Health);
+
+            if (Health < 0.2f)
+            {
+                AudioManager.PlayAlarm();
+            }
+
+            if (Health < 0)
+                ExplodeSound.Play();
+        }
+    }
 
 	public void Repair() {
-		Health += 0.05f;
+        Health += 1 / (RepairTime - BurnTime / 2) / 4;
 		OnIncrementHealth(Health);
+
+	    _lastRepairTime = Time.time;
+
+        if (!_repairing)
+            StartCoroutine(RepairSoundRoutine());
 	}
 
-	public void CompleteRepair() {
+    private IEnumerator RepairSoundRoutine()
+    {
+        _repairing = true;
+
+        _audio = RepairSound.Play();
+
+        float vol = _audio.volume;
+
+        while (Time.time - _lastRepairTime < 1f)
+        {
+            _audio.volume = vol*Mathf.Clamp01(2 - (Time.time - _lastRepairTime) * 4);
+            yield return null;
+        }
+        _repairing = false;
+        _audio.Stop();
+    }
+
+    public void CompleteRepair() {
 		Health = 1f;
-		audio.Play();
-		// play some kind of sound
-	}
+        RepairEndSound.Play();
+        // play some kind of sound
+    }
+
+    public void Damage(float damageAmount)
+    {
+        Health *= 1 - damageAmount;
+    }
 }
