@@ -9,7 +9,7 @@ public class Tool : MonoBehaviour
     public Action OnPickup;
 
     public enum ToolType {
-        Generic, Battery
+        Generic, Battery, Extinguisher
     };
 
     public ToolType Type;
@@ -24,7 +24,8 @@ public class Tool : MonoBehaviour
 	    transform.parent = par;
 	    transform.localPosition = Vector2.up*.1f;
 
-        OnPickup();
+		if(OnPickup != null)
+        	OnPickup();
 	}
 
     public void Drop(Vector2 pos)

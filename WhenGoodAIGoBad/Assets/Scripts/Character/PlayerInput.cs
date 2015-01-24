@@ -8,11 +8,13 @@ public class PlayerInput : MonoBehaviour
     private InputDevice _inputDevice;
     private PlayerManager _playerManager;
 
-
     // Repairing functions
     private bool _canRepair = false;
     private RepairTrigger _machine;
     private float _repairTimer; 
+
+    // Fire extinguisher
+    public ParticleSystem extinguisherParticle;
 
     protected void Awake()
     {
@@ -23,7 +25,9 @@ public class PlayerInput : MonoBehaviour
     protected void Start()
     {
         if(_inputDevice == null)
-            _inputDevice = InputManager.Devices[0];        
+            _inputDevice = InputManager.Devices[0]; 
+
+        extinguisherParticle.Stop();       
     }
 
     protected void Update()
@@ -50,6 +54,17 @@ public class PlayerInput : MonoBehaviour
                 _machine.CompleteRepair();
                 _playerManager.ConsumeTool();
             }
+        }
+
+		if(_playerManager.CarriedTool != null && _playerManager.CarriedTool.Type == Tool.ToolType.Extinguisher) {
+            if(_inputDevice.Action3.WasPressed) {
+                extinguisherParticle.Play();
+
+                //play a sound
+                
+            } else if (_inputDevice.Action3.WasReleased) {
+				extinguisherParticle.Stop ();
+			}
         }
         
     }
