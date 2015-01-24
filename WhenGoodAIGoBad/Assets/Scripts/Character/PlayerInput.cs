@@ -85,7 +85,7 @@ public class PlayerInput : MonoBehaviour
 			//LeanTween.scale(BoomBox, new Vector3(0.23f, 0.065f, 1) , 0.25f).setLoopPingPong().setEase(LeanTweenType.easeOutCubic);
             BoomBox.audio.Play();
 
-            FindObjectOfType<GameOver>().ActivateGameOver();
+            //FindObjectOfType<GameOver>().ActivateGameOver();
         } else if(_inputDevice.Action4.IsPressed) {
             _characterController.SetDesiredSpeed(Vector2.zero);
             return;
