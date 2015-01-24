@@ -8,6 +8,11 @@ public class PlayerInput : MonoBehaviour
     private InputDevice _inputDevice;
     private PlayerManager _playerManager;
 
+
+    // Repairing functions
+    private bool _canRepair = false;
+    private RepairTrigger _machine;
+
     protected void Awake()
     {
         _characterController = GetComponent<CharacterController>();
@@ -29,10 +34,23 @@ public class PlayerInput : MonoBehaviour
 
         if (_inputDevice.Action2.WasPressed)
             _playerManager.PickupDropItem();
+
+        if(_inputDevice.Action1.WasPressed && _canRepair) {
+            if(_playerManager.CarriedTool.Type == _machine.ToolRequired) {
+				_machine.Repair();
+                Destroy(_playerManager.CarriedTool.gameObject);
+            }
+        }
+        
     }
 
     public void SetController(InputDevice inputDevice)
     {
         _inputDevice = inputDevice;
+    }
+
+    public void InitRepairs(RepairTrigger machine, bool canRepair) {
+        _machine = machine;
+        _canRepair = canRepair;
     }
 }

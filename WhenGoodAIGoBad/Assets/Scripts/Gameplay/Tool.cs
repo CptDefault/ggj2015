@@ -1,16 +1,30 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 [RequireComponent(typeof(Collider2D))]
 public class Tool : MonoBehaviour 
 {
     public bool Carried { get; private set; }
+    public Action OnPickup;
+
+    public enum ToolType {
+        Generic, Battery
+    };
+
+    public ToolType Type;
+
+    private void Start() {
+        Type = ToolType.Generic;
+    }
 
 	public void PickUp(Transform par)
 	{
 	    Carried = true;
 	    transform.parent = par;
 	    transform.localPosition = Vector2.up*.1f;
+
+        OnPickup();
 	}
 
     public void Drop(Vector2 pos)
