@@ -12,6 +12,7 @@ public class PlayerInput : MonoBehaviour
     // Repairing functions
     private bool _canRepair = false;
     private RepairTrigger _machine;
+    private float _repairTimer; 
 
     protected void Awake()
     {
@@ -35,10 +36,19 @@ public class PlayerInput : MonoBehaviour
         if (_inputDevice.Action2.WasPressed)
             _playerManager.PickupDropItem();
 
-        if(_inputDevice.Action1.WasPressed && _canRepair) {
-            if(_playerManager.CarriedTool.Type == _machine.ToolRequired) {
-				_machine.Repair();
-                Destroy(_playerManager.CarriedTool.gameObject);
+        if(_canRepair && _playerManager.CarriedTool != null && _machine != null) {
+            
+            if(_inputDevice.Action1.IsPressed && _playerManager.CarriedTool.Type == _machine.ToolRequired) {
+                _repairTimer += Time.deltaTime;
+                if(_repairTimer >= 0.25f) {
+				    _machine.Repair();
+                    _repairTimer = 0;
+                }
+            }
+
+            if(_machine.Health >= 0.99f) {
+                _machine.CompleteRepair();
+                _playerManager.ConsumeTool();
             }
         }
         

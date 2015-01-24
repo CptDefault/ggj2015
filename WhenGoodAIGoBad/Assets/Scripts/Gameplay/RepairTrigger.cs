@@ -1,14 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class RepairTrigger : MonoBehaviour {
 	public Tool.ToolType ToolRequired;
 
-	public float Health = 100;
+	public float Health = 1;
+	public HealthBar myBar; 
+
+	public Action<float> OnIncrementHealth;
 
 	// Use this for initialization
 	void Start () {
-	
+		OnIncrementHealth += myBar.SetHealth;
+		myBar.SetHealth(Health);
 	}
 	
 	// Update is called once per frame
@@ -17,15 +22,7 @@ public class RepairTrigger : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {
-	    /*if(other.gameObject.tag == "Tool") {
-	    	var tool = other.gameObject;
-	    	if(tool.GetComponent<Tool>().Type == ToolRequired) {
-	    		Repair();
-	    		Destroy(tool);
-	    	}
-	    }*/
-
-	    if(other.gameObject.tag == "Player"){
+	    if(other.gameObject.tag == "Player" && Health < 1f){
 	    	other.gameObject.GetComponent<PlayerInput>().InitRepairs(this, true);
 	    }
 	}
@@ -37,7 +34,12 @@ public class RepairTrigger : MonoBehaviour {
 	}
 
 	public void Repair() {
-		Health = 100;
+		Health += 0.05f;
+		OnIncrementHealth(Health);
+	}
+
+	public void CompleteRepair() {
+		Health = 1f;
 		audio.Play();
 		// play some kind of sound
 	}

@@ -42,4 +42,9 @@ public class PlayerManager : MonoBehaviour
             _overTool = null;
         }
     }
+
+    public void ConsumeTool() {
+        Destroy(_carriedTool.gameObject);
+        _carriedTool = null;
+    }
 }

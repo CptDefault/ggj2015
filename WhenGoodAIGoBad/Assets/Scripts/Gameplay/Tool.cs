@@ -15,7 +15,7 @@ public class Tool : MonoBehaviour
     public ToolType Type;
 
     private void Start() {
-        Type = ToolType.Generic;
+        //Type = ToolType.Generic;
     }
 
 	public void PickUp(Transform par)
