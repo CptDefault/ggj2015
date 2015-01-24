@@ -52,8 +52,11 @@ public class PlayerInput : MonoBehaviour
         //print(_inputDevice.LeftStick.Vector);
         _characterController.SetDesiredSpeed(Vector2.ClampMagnitude(vector2, 1));
 
-        if (_inputDevice.Action2.WasPressed)
+        if (_inputDevice.Action2.WasPressed) {
             _playerManager.PickupDropItem();
+            ExtinguisherParticle.Stop ();
+        }
+            
 
         if(_canRepair && _playerManager.CarriedTool != null && _machine != null) {
             
