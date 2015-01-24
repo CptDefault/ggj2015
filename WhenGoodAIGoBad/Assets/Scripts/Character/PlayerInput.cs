@@ -28,8 +28,8 @@ public class PlayerInput : MonoBehaviour
     private bool _stunned;
     private float _stunTimer;
     private float _flashTimer;
-    public AudioClip hurtSound;
-    public AudioClip dieSound;
+    public AudioClipContainer HurtSound;
+    public AudioClipContainer DieSound;
 
     protected void Awake()
     {
@@ -157,14 +157,14 @@ public class PlayerInput : MonoBehaviour
         _canRepair = canRepair;
     }
 
-    void OnTriggerEnter2D(Collider2D other) {
+    protected void OnTriggerEnter2D(Collider2D other) {
 
-        if(other.gameObject.tag == "Fire") {
+        if(other.GetComponent<Fire>() != null) {
             GetStunned(other.gameObject.transform.position);
         }
     }
 
-    void GetStunned(Vector3 pos) {
+    private void GetStunned(Vector3 pos) {
 		rigidbody2D.AddForce (400 * (transform.position - pos));
         _sprite.enabled = true;
 
@@ -172,14 +172,15 @@ public class PlayerInput : MonoBehaviour
             // die
             Die();
         } else {
-            _stunned = true; 
-            audio.PlayOneShot(hurtSound);
+            _stunned = true;
+            HurtSound.Play();
         }
     }
 
     private void Die() {
-        if(_alive) {
-            audio.PlayOneShot(dieSound);
+        if(_alive)
+        {
+            DieSound.Play();
             _alive = false;
             CloneBay.Instance.RespawnPlayer(this);
 
