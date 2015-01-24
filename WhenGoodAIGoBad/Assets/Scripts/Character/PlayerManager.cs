@@ -13,12 +13,11 @@ public class PlayerManager : MonoBehaviour
 
     public GameObject TipPrefab;
     private UILabel _tipLabel;
+    public UILabel TipLabel { get {return _tipLabel;}}
 
     public void Awake () {
         if(_tipLabel == null)
             _tipLabel = (GameObject.Instantiate(TipPrefab) as GameObject).GetComponent<UILabel>();
-
-
     }
 
     public void Update () {
@@ -60,14 +59,17 @@ public class PlayerManager : MonoBehaviour
         {
             print("is over");
             _overTool = tool;
+            _tipLabel.text = "(B) Pickup/drop item";
         }
     }
     protected void OnTriggerExit2D(Collider2D col)
     {
         var tool = col.GetComponent<Tool>();
-        if (tool == _overTool)
+        if (tool == _overTool && tool != null)
         {
             _overTool = null;
+            if(_carriedTool == null || _carriedTool.Type != Tool.ToolType.Extinguisher)
+                _tipLabel.text = "";
         }
     }
 

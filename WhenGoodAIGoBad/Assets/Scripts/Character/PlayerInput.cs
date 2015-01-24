@@ -33,6 +33,10 @@ public class PlayerInput : MonoBehaviour
 	public AudioClip pickupSound;
 	public AudioClip dropSound;
 
+    // Tutorial
+    private bool _hasDanced; 
+    private bool _hasUsedExtinguisher;
+
     protected void Awake()
     {
         _characterController = GetComponent<CharacterController>();
@@ -87,6 +91,11 @@ public class PlayerInput : MonoBehaviour
 
             //FindObjectOfType<GameOver>().ActivateGameOver();
             AIText.ShowText("Stop dancing!");
+
+            if(!_hasDanced) {
+                _hasDanced = true;
+                _playerManager.TipLabel.text = "";
+            }
         } else if(_inputDevice.Action4.IsPressed) {
             _characterController.SetDesiredSpeed(Vector2.zero);
             return;
@@ -110,14 +119,12 @@ public class PlayerInput : MonoBehaviour
         _characterController.SetDesiredSpeed(Vector2.ClampMagnitude(vector2, 1));
 
         if (_inputDevice.Action2.WasPressed) {
-			
-			if(_playerManager.CarriedTool == null)
-				audio.PlayOneShot(pickupSound);
-			else 
-				audio.PlayOneShot(dropSound);
-
-            _playerManager.PickupDropItem();
+		    _playerManager.PickupDropItem();
             ExtinguisherParticle.Stop ();
+
+            if(!_hasUsedExtinguisher && _playerManager.CarriedTool != null && _playerManager.CarriedTool.Type == Tool.ToolType.Extinguisher) {
+                _playerManager.TipLabel.text = "(Left stick) Aim\n(A) Shoot fire extinguisher";
+            }
 
         }
             
@@ -140,6 +147,7 @@ public class PlayerInput : MonoBehaviour
                 if(_machine.Health >= 0.99f) {
                     _machine.CompleteRepair();
                     _playerManager.ConsumeTool();
+                    _playerManager.TipLabel.text = "";
                 }
             }
         }
@@ -150,6 +158,11 @@ public class PlayerInput : MonoBehaviour
                 ExtinguisherParticle.Play();
                 ExtinguisherParticle.audio.Play();
                 //play a sound
+
+                if(!_hasUsedExtinguisher) {
+                    _playerManager.TipLabel.text = "";
+                    _hasUsedExtinguisher = true;
+                }
                 
             } else if (_inputDevice.Action1.IsPressed) {
                 _characterController.SetDesiredSpeed(Vector2.zero);
@@ -163,6 +176,7 @@ public class PlayerInput : MonoBehaviour
             }
             else if (_inputDevice.Action1.WasReleased) {
 				ExtinguisherParticle.Stop ();
+				ExtinguisherParticle.Clear ();
                 ExtinguisherParticle.audio.Stop ();
 			}
         }
@@ -177,6 +191,11 @@ public class PlayerInput : MonoBehaviour
     public void InitRepairs(RepairTrigger machine, bool canRepair) {
         _machine = machine;
         _canRepair = canRepair;
+
+        if(_canRepair)
+            _playerManager.TipLabel.text = "(A) Repair room";
+        else
+            _playerManager.TipLabel.text = "";
     }
 
     protected void OnTriggerEnter2D(Collider2D other) {
