@@ -19,12 +19,15 @@ public class AIController : MonoBehaviour
     private int _pathInd;
     private CharacterController _characterController;
 
-    public Transform TestThingy;
     private RepairTrigger[] _repairTriggers;
     private RepairTrigger _target;
     private Goal _goal;
     private PlayerManager _targetPlayer;
     private double _waitUntilTime;
+    private bool _passingDoor;
+    private Vector3 _debug;
+    private Vector2 _doorVelocity;
+    private bool _approachingDoor;
 
     protected void Awake()
     {
@@ -38,6 +41,12 @@ public class AIController : MonoBehaviour
         _goal = Goal.HuntPlayer;
         _path = AIPathfinding.PathToPoint(transform.position, _targetPlayer.transform.position);
         _pathInd = 0;
+    }
+
+    protected void OnDrawGizmos()
+    {
+        if(Application.isPlaying)
+            Gizmos.DrawLine(transform.position, _debug);
     }
 
 
@@ -55,15 +64,47 @@ public class AIController : MonoBehaviour
             _pathInd = 0;
             _goal = Goal.BombTarget;
         }
-        TestThingy = ((MonoBehaviour)_path[_pathInd]).transform;
 
         var target = ((MonoBehaviour) _path[_pathInd]).transform.position;
+        var d = _path[_pathInd] as Door;
+        if (d != null)
+        {
+            target = d.DoorCollider.bounds.center;
+
+            if (!_approachingDoor)
+            {
+                _doorVelocity = target - transform.position;
+                _approachingDoor = true;
+            }
+            if (_approachingDoor && ! _passingDoor)
+            {
+                target += (Vector3)d.Facing.normalized * 1 * -Mathf.Sign(Vector2.Dot(d.Facing, _doorVelocity));
+                print("Approaching");
+            }
+            if (_passingDoor || Vector3.SqrMagnitude(transform.position - target) < 0.4f)
+            {
+                print("Passing" + (Vector3)d.Facing.normalized + " : " + Mathf.Sign(Vector2.Dot(d.Facing, _doorVelocity)));
+                _passingDoor = true;
+                target = d.DoorCollider.bounds.center;
+                target += (Vector3)d.Facing.normalized * 1 * Mathf.Sign(Vector2.Dot(d.Facing, _doorVelocity));
+            }
+            else if (!_approachingDoor)
+            {
+                print("Nothing special");                
+            }
+        }
         Vector2 toTarget = target - transform.position;
 
-        _characterController.SetDesiredSpeed(toTarget.normalized);
+        _debug = target;
 
-        if (Vector3.SqrMagnitude(transform.position - target) < 0.2f)
+        _characterController.SetDesiredSpeed(d == null ? toTarget.normalized : Vector2.ClampMagnitude(toTarget,1));
+
+        if (Vector3.SqrMagnitude(transform.position - target) < (d == null ? 0.4f : 0.1f))
+        {
             _pathInd++;
+            _passingDoor = false;
+            _approachingDoor = false;
+        }
 
         if (_pathInd >= _path.Count)
         {

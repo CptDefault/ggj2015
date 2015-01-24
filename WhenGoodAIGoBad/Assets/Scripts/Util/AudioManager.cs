@@ -15,6 +15,8 @@ public class AudioManager : MonoBehaviour
     {
         if (clip == null)
             return null;
+        if (_instance == null)
+            _instance = FindObjectOfType<AudioManager>();
 
         AudioSource audioSource = null;
         foreach (var source in _instance._soundClipPool)

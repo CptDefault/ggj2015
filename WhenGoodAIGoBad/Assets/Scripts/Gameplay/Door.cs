@@ -10,6 +10,8 @@ public class Door : MonoBehaviour, ITraversable
     public SpriteRenderer[] BackRenderers;
     public Collider2D DoorCollider;
 
+    public Vector2 Facing = Vector2.up;
+
     public AudioClipContainer LockSound;
     public AudioClipContainer OpenSound;
 
@@ -28,7 +30,11 @@ public class Door : MonoBehaviour, ITraversable
         if (DoorCollider == null)
             DoorCollider = GetComponent<Collider2D>();
 
-        Open = true;
+    }
+
+    protected void Start()
+    {
+        Open = false;        
     }
 
 #if UNITY_EDITOR
@@ -125,6 +131,9 @@ public class Door : MonoBehaviour, ITraversable
             if(_open != value)
                 (value ? OpenSound : LockSound).Play();
 
+            print("Opening Door: " + value);
+            _open = value;
+
             if (FrontRenderer != null) FrontRenderer.enabled = !_open;
 
             foreach (var backRenderer in BackRenderers)
@@ -132,7 +141,6 @@ public class Door : MonoBehaviour, ITraversable
                 backRenderer.enabled = _open;
             }
 
-            _open = value;
             if (DoorCollider != null) DoorCollider.enabled = !_open;
         }
     }
