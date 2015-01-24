@@ -5,20 +5,28 @@ using System;
 public class RepairTrigger : MonoBehaviour {
 	public Tool.ToolType ToolRequired;
 
+	public GameObject HealthBarPrefab;
 	public float Health = 1;
 	public HealthBar myBar; 
 
 	public Action<float> OnIncrementHealth;
 
-	// Use this for initialization
+
 	void Start () {
+		if(myBar == null)
+			myBar = (GameObject.Instantiate(HealthBarPrefab) as GameObject).GetComponent<HealthBar>();
+
+		myBar.transform.parent = UICamera.mainCamera.transform.parent;
+		myBar.transform.localScale = HealthBarPrefab.transform.localScale;
+
 		OnIncrementHealth += myBar.SetHealth;
 		myBar.SetHealth(Health);
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+
+		Vector2 screenPos = Camera.main.WorldToScreenPoint(transform.position);
+		screenPos.x -= (Screen.width/ 2.0f);
+		screenPos.y -= (Screen.height / 2.0f);
+		screenPos.y += Screen.height/15f;
+		myBar.transform.localPosition = screenPos;
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {

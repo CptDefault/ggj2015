@@ -3,12 +3,9 @@ using System.Collections;
 
 public class HealthBar : MonoBehaviour {
 
-	private UISprite sprite; 
+	public UISprite sprite; 
 
-	// Use this for initialization
-	void Start () {
-		sprite = GetComponent<UISprite>();
-	}
+	// Use this for initialization;
 
 	public void SetHealth(float amount) {
 		sprite.fillAmount = amount;
