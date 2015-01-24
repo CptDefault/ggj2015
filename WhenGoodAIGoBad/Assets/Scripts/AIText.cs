@@ -35,5 +35,9 @@ public class AIText : MonoBehaviour {
 			audio.Play();
 			yield return new WaitForSeconds (0.02f);
 		}
+
+		yield return new WaitForSeconds (3f);
+
+		scale.PlayReverse();
 	}
 }
