@@ -40,6 +40,9 @@ public class PlayerInput : MonoBehaviour
 
     protected void Update()
     {
+        if(_inputDevice.MenuWasPressed)
+            PauseScreen.TogglePause();
+
         // start dancing
         if(_inputDevice.Action4.WasPressed) {
             //summon boombox
