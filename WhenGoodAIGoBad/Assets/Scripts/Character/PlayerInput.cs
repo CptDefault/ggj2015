@@ -14,7 +14,11 @@ public class PlayerInput : MonoBehaviour
     private float _repairTimer; 
 
     // Fire extinguisher
-    public ParticleSystem extinguisherParticle;
+    public ParticleSystem ExtinguisherParticle;
+    public Transform ExtinguisherRayCast;
+
+    // Heading
+    private Quaternion _heading;
 
     protected void Awake()
     {
@@ -27,14 +31,25 @@ public class PlayerInput : MonoBehaviour
         if(_inputDevice == null)
             _inputDevice = InputManager.Devices[0]; 
 
-        extinguisherParticle.Stop();       
+        ExtinguisherParticle.Stop();       
     }
 
     protected void Update()
     {
+        // determine heading
+        //if(_inputDevice.LeftStick.Vector != Vector2.zero)
+        //    DetermineHeading();
+
+        if(_inputDevice.LeftStick.Vector.magnitude > 0.3f) {
+            float heading = Mathf.Atan2(_inputDevice.LeftStick.Vector.x,_inputDevice.LeftStick.Vector.y);
+            _heading = Quaternion.Euler(-90f+heading*Mathf.Rad2Deg,90f,0f); 
+        }
+        ExtinguisherParticle.transform.rotation=_heading;
+
+
         var vector2 = _inputDevice.LeftStick.Vector + _inputDevice.DPad.Vector;
 
-
+        //print(_inputDevice.LeftStick.Vector);
         _characterController.SetDesiredSpeed(Vector2.ClampMagnitude(vector2, 1));
 
         if (_inputDevice.Action2.WasPressed)
@@ -58,12 +73,19 @@ public class PlayerInput : MonoBehaviour
 
 		if(_playerManager.CarriedTool != null && _playerManager.CarriedTool.Type == Tool.ToolType.Extinguisher) {
             if(_inputDevice.Action3.WasPressed) {
-                extinguisherParticle.Play();
-
+                ExtinguisherParticle.Play();
                 //play a sound
                 
-            } else if (_inputDevice.Action3.WasReleased) {
-				extinguisherParticle.Stop ();
+            } else if (_inputDevice.Action3.IsPressed) {
+                RaycastHit2D hit = Physics2D.Raycast(transform.position, ExtinguisherRayCast.position, 4f, 1 << 8);
+                if (hit.collider != null) {
+					hit.collider.gameObject.collider2D.enabled = false;
+					LeanTween.alpha(hit.collider.gameObject, 0, 0.5f);
+                    Destroy(hit.collider.gameObject, 0.6f);
+                }
+            }
+            else if (_inputDevice.Action3.WasReleased) {
+				ExtinguisherParticle.Stop ();
 			}
         }
         
@@ -78,4 +100,39 @@ public class PlayerInput : MonoBehaviour
         _machine = machine;
         _canRepair = canRepair;
     }
+
+    /*private void DetermineHeading() {
+        print(_inputDevice.LeftStick.Vector.x + " " + _inputDevice.LeftStick.Vector.y);
+        if(_inputDevice.LeftStick.Vector.x > 0.3f && _inputDevice.LeftStick.Vector.y > 0.3f) {
+            _heading = Heading.NorthEast;
+        }
+        else if(_inputDevice.LeftStick.Vector.x > 0.3f && _inputDevice.LeftStick.Vector.y < -0.3f) {
+            _heading = Heading.SouthEast;
+            
+        }
+        else if(_inputDevice.LeftStick.Vector.x < -0.3f && _inputDevice.LeftStick.Vector.y < -0.3f) {
+            _heading = Heading.SouthWest;
+            
+        }
+        else if(_inputDevice.LeftStick.Vector.x < -0.3f && _inputDevice.LeftStick.Vector.y > 0.3f) {
+            _heading = Heading.NorthWest;
+            
+        }
+        else if(_inputDevice.LeftStick.Vector.x > 0) {
+            _heading = Heading.East;
+            
+        }
+        else if(_inputDevice.LeftStick.Vector.x < 0) {
+            _heading = Heading.West;
+            
+        }
+        else if(_inputDevice.LeftStick.Vector.y > 0) {
+            _heading = Heading.North;
+            
+        }
+        else if(_inputDevice.LeftStick.Vector.y < 0) {
+            _heading = Heading.South;
+            
+        }
+    }*/
 }
