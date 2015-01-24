@@ -7,7 +7,7 @@ public class PlayerInput : MonoBehaviour
     private CharacterController _characterController;
     private InputDevice _inputDevice;
     private PlayerManager _playerManager;
-
+	private SpriteRenderer _sprite;
     // Repairing functions
     private bool _canRepair = false;
     private RepairTrigger _machine;
@@ -20,10 +20,22 @@ public class PlayerInput : MonoBehaviour
     // Heading
     private Quaternion _heading;
 
+    // Dancing
+    public GameObject BoomBox;
+
+    // Health + Damage
+    private bool _alive = true;
+    private bool _stunned;
+    private float _stunTimer;
+    private float _flashTimer;
+    public AudioClip hurtSound;
+    public AudioClip dieSound;
+
     protected void Awake()
     {
         _characterController = GetComponent<CharacterController>();
         _playerManager = GetComponent<PlayerManager>();
+		_sprite = GetComponent<SpriteRenderer> ();
     }
 
     protected void Start()
@@ -32,13 +44,51 @@ public class PlayerInput : MonoBehaviour
             _inputDevice = InputManager.Devices[0]; 
 
         ExtinguisherParticle.Stop();       
+        BoomBox.SetActive(false);
     }
 
     protected void Update()
     {
-        // determine heading
-        //if(_inputDevice.LeftStick.Vector != Vector2.zero)
-        //    DetermineHeading();
+        if(_inputDevice.MenuWasPressed)
+            PauseScreen.TogglePause();
+
+        if(!_alive) {
+            _characterController.SetDesiredSpeed(Vector2.zero);
+            return;
+        }
+
+        if(_stunned) {
+            _stunTimer += Time.deltaTime;
+            _flashTimer += Time.deltaTime;
+
+            if(_flashTimer >= 0.1f) {
+				_sprite.enabled = !_sprite.enabled;
+                _flashTimer = 0;
+            }
+
+            if(_stunTimer >= 3f) {
+				_sprite.enabled = true;
+                _stunned = false;
+                _stunTimer = 0;
+                _flashTimer = 0;
+            } 
+        }
+
+        // start dancing
+        if(_inputDevice.Action4.WasPressed) {
+            //summon boombox
+            BoomBox.SetActive(true);
+            BoomBox.transform.localScale = Vector3.zero;
+            LeanTween.scale(BoomBox, new Vector3(0.23f, 0.065f, 1) , 0.25f).setEase(LeanTweenType.easeOutElastic);
+        } else if(_inputDevice.Action4.IsPressed) {
+            _characterController.SetDesiredSpeed(Vector2.zero);
+            return;
+        }
+        else if (_inputDevice.Action4.WasReleased) {
+            BoomBox.SetActive(false);
+        }
+
+
 
         if(_inputDevice.LeftStick.Vector.magnitude > 0.3f) {
             float heading = Mathf.Atan2(_inputDevice.LeftStick.Vector.x,_inputDevice.LeftStick.Vector.y);
@@ -49,11 +99,13 @@ public class PlayerInput : MonoBehaviour
 
         var vector2 = _inputDevice.LeftStick.Vector + _inputDevice.DPad.Vector;
 
-        //print(_inputDevice.LeftStick.Vector);
         _characterController.SetDesiredSpeed(Vector2.ClampMagnitude(vector2, 1));
 
-        if (_inputDevice.Action2.WasPressed)
+        if (_inputDevice.Action2.WasPressed) {
             _playerManager.PickupDropItem();
+            ExtinguisherParticle.Stop ();
+        }
+            
 
         if(_inputDevice.Action4.WasPressed)
             FindObjectOfType<AIController>().PlayerDanced(_playerManager);
@@ -66,11 +118,11 @@ public class PlayerInput : MonoBehaviour
 				    _machine.Repair();
                     _repairTimer = 0;
                 }
-            }
 
-            if(_machine.Health >= 0.99f) {
-                _machine.CompleteRepair();
-                _playerManager.ConsumeTool();
+                if(_machine.Health >= 0.99f) {
+                    _machine.CompleteRepair();
+                    _playerManager.ConsumeTool();
+                }
             }
         }
 
@@ -82,6 +134,7 @@ public class PlayerInput : MonoBehaviour
             } else if (_inputDevice.Action1.IsPressed) {
                 RaycastHit2D hit = Physics2D.Raycast(transform.position, ExtinguisherRayCast.position-transform.position, 4f, 1 << 8);
                 if (hit.collider != null) {
+                    _sprite.enabled = true;
 					hit.collider.gameObject.collider2D.enabled = false;
 					LeanTween.alpha(hit.collider.gameObject, 0, 0.5f);
                     Destroy(hit.collider.gameObject, 0.6f);
@@ -102,6 +155,45 @@ public class PlayerInput : MonoBehaviour
     public void InitRepairs(RepairTrigger machine, bool canRepair) {
         _machine = machine;
         _canRepair = canRepair;
+    }
+
+    void OnTriggerEnter2D(Collider2D other) {
+
+        if(other.gameObject.tag == "Fire") {
+            GetStunned(other.gameObject.transform.position);
+        }
+    }
+
+    void GetStunned(Vector3 pos) {
+		rigidbody2D.AddForce (400 * (transform.position - pos));
+        _sprite.enabled = true;
+
+        if(_stunned && _stunTimer >= 1f) {
+            // die
+            Die();
+        } else {
+            _stunned = true; 
+            audio.PlayOneShot(hurtSound);
+        }
+    }
+
+    private void Die() {
+        if(_alive) {
+            audio.PlayOneShot(dieSound);
+            _alive = false;
+            CloneBay.Instance.RespawnPlayer(this);
+
+            // DROP IT LIKE ITS HOT
+            if(_playerManager.CarriedTool != null) 
+                _playerManager.PickupDropItem();
+        }
+    }
+
+    public void Respawn() {
+        _alive = true;
+        _sprite.enabled = true;
+        _stunTimer = 0;
+        _flashTimer = 0;
     }
 
     /*private void DetermineHeading() {
