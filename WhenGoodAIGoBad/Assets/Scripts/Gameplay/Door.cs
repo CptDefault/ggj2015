@@ -6,11 +6,13 @@ public class Door : MonoBehaviour, ITraversable
 {
     public Room[] Rooms;
 
+    public SpriteRenderer FrontRenderer;
+    public SpriteRenderer[] BackRenderers;
+    public Collider2D DoorCollider;
+
     public AudioClipContainer LockSound;
     public AudioClipContainer OpenSound;
 
-    private Collider2D _collider;
-    private SpriteRenderer _spriteRenderer;
     private int _playerCount;
     private bool _locked;
     private bool _open;
@@ -23,9 +25,10 @@ public class Door : MonoBehaviour, ITraversable
         {
             room.AddDoor(this);
         }
+        if (DoorCollider == null)
+            DoorCollider = GetComponent<Collider2D>();
 
-        _collider = GetComponent<Collider2D>();
-        _spriteRenderer = GetComponent<SpriteRenderer>();
+        Open = true;
     }
 
 #if UNITY_EDITOR
@@ -33,6 +36,9 @@ public class Door : MonoBehaviour, ITraversable
     {
         foreach (var room in Rooms)
         {
+            if(room == null)
+                continue;
+            
             Gizmos.DrawLine(transform.position, room.transform.position);
             UnityEditor.Handles.color = Color.red;
             UnityEditor.Handles.Label((room.transform.position) + Vector3.back, (RoomDistance(room) * 100).ToString());
@@ -44,6 +50,13 @@ public class Door : MonoBehaviour, ITraversable
         print("Resetting!");
         Rooms = FindObjectsOfType<Room>().OrderBy(room => RoomDistance(room)).Take(2).ToArray();
 
+    }
+
+    [ContextMenu("Find Rooms")]
+    protected void FindRooms()
+    {
+        print("Finding Rooms!");
+        Rooms = FindObjectsOfType<Room>().OrderBy(room => RoomDistance(room)).Take(2).ToArray();
     }
 
     private float RoomDistance(Room room)
@@ -98,9 +111,6 @@ public class Door : MonoBehaviour, ITraversable
             _locked = value;
 
             Open = _playerCount > 0 && !_locked;
-
-
-            _spriteRenderer.color = value ? Color.red : Color.white;
         }
     }
 
@@ -115,9 +125,15 @@ public class Door : MonoBehaviour, ITraversable
             if(_open != value)
                 (value ? OpenSound : LockSound).Play();
 
+            if (FrontRenderer != null) FrontRenderer.enabled = !_open;
+
+            foreach (var backRenderer in BackRenderers)
+            {
+                backRenderer.enabled = _open;
+            }
+
             _open = value;
-            _collider.enabled = !_open;
-            _spriteRenderer.enabled = !_open;
+            if (DoorCollider != null) DoorCollider.enabled = !_open;
         }
     }
 
