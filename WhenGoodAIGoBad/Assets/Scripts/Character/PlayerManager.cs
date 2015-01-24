@@ -11,9 +11,32 @@ public class PlayerManager : MonoBehaviour
 
     public Tool CarriedTool {get { return _carriedTool;} }
 
+    public GameObject TipPrefab;
+    private UILabel _tipLabel;
+
+    public void Awake () {
+        if(_tipLabel == null)
+            _tipLabel = (GameObject.Instantiate(TipPrefab) as GameObject).GetComponent<UILabel>();
+
+
+    }
+
+    public void Update () {
+        // text follow around
+        if(_tipLabel.text != "") {
+            _tipLabel.transform.parent = UICamera.mainCamera.transform.parent;
+            _tipLabel.transform.localScale = TipPrefab.transform.localScale;
+
+            Vector2 screenPos = Camera.main.WorldToScreenPoint(transform.position);
+            screenPos.x -= (Screen.width/ 2.0f);
+            screenPos.y -= (Screen.height / 2.0f);
+            screenPos.y -= Screen.height/22f;
+            _tipLabel.transform.localPosition = screenPos;
+        }
+    }
+
     public void PickupDropItem()
     {
-        print("Try pickup");
         if (_carriedTool != null)
         {
             _carriedTool.Drop(transform.position);

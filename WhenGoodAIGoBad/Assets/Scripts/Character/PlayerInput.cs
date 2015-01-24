@@ -86,6 +86,7 @@ public class PlayerInput : MonoBehaviour
             BoomBox.audio.Play();
 
             //FindObjectOfType<GameOver>().ActivateGameOver();
+            AIText.ShowText("Stop dancing!");
         } else if(_inputDevice.Action4.IsPressed) {
             _characterController.SetDesiredSpeed(Vector2.zero);
             return;

@@ -11,6 +11,8 @@ public class AudioManager : MonoBehaviour
     private AudioSource _alarm;
     private float _lastAlarm;
 
+    public AudioClipContainer AnnouncementSound;
+
     public static AudioSource PlayClip(AudioClip clip, float volume = 1, float pitch = 1)
     {
         if (clip == null)
@@ -42,6 +44,10 @@ public class AudioManager : MonoBehaviour
         audioSource.Play();
 
         return audioSource;
+    }
+
+    public static void PlayAnnouncement() {
+        PlayClip(_instance.AnnouncementSound.clip, 1, 1);
     }
 
     protected void Awake()
