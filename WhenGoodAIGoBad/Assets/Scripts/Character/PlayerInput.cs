@@ -30,6 +30,8 @@ public class PlayerInput : MonoBehaviour
     private float _flashTimer;
     public AudioClip hurtSound;
     public AudioClip dieSound;
+	public AudioClip pickupSound;
+	public AudioClip dropSound;
 
     protected void Awake()
     {
@@ -80,12 +82,15 @@ public class PlayerInput : MonoBehaviour
             BoomBox.SetActive(true);
             BoomBox.transform.localScale = Vector3.zero;
             LeanTween.scale(BoomBox, new Vector3(0.23f, 0.065f, 1) , 0.25f).setEase(LeanTweenType.easeOutElastic);
+			//LeanTween.scale(BoomBox, new Vector3(0.23f, 0.065f, 1) , 0.25f).setLoopPingPong().setEase(LeanTweenType.easeOutCubic);
+            BoomBox.audio.Play();
         } else if(_inputDevice.Action4.IsPressed) {
             _characterController.SetDesiredSpeed(Vector2.zero);
             return;
         }
         else if (_inputDevice.Action4.WasReleased) {
             BoomBox.SetActive(false);
+            BoomBox.audio.Stop();
         }
 
 
@@ -102,8 +107,15 @@ public class PlayerInput : MonoBehaviour
         _characterController.SetDesiredSpeed(Vector2.ClampMagnitude(vector2, 1));
 
         if (_inputDevice.Action2.WasPressed) {
+			
+			if(_playerManager.CarriedTool == null)
+				audio.PlayOneShot(pickupSound);
+			else 
+				audio.PlayOneShot(dropSound);
+
             _playerManager.PickupDropItem();
             ExtinguisherParticle.Stop ();
+
         }
             
 

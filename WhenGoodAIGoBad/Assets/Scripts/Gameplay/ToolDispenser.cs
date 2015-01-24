@@ -18,8 +18,10 @@ public class ToolDispenser : MonoBehaviour {
 
 	private void SpawnTool() {
 		if (!ToolTaken) {
-			GameObject tool = (GameObject)GameObject.Instantiate (ToolPrefab, DispensePoint.position, Quaternion.identity);
+			GameObject tool = (GameObject)GameObject.Instantiate (ToolPrefab, transform.position, Quaternion.identity);
+			LeanTween.move(tool, DispensePoint.position, 0.25f).setEase(LeanTweenType.easeOutCubic);
 			tool.GetComponent<Tool>().OnPickup += () => {ToolTaken = true;};
+			audio.Play();
 		}
 	}
 
