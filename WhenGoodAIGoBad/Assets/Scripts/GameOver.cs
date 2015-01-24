@@ -36,6 +36,7 @@ public class GameOver : MonoBehaviour {
 		yield return new WaitForSeconds(1.5f);
 
 		_alpha.PlayForward();
+		Label.audio.Play();
 
 		yield return new WaitForSeconds(0.5f);
 
