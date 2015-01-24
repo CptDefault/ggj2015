@@ -164,7 +164,7 @@ public class PlayerInput : MonoBehaviour
 		rigidbody2D.AddForce (500 * (transform.position - pos));
         _sprite.enabled = true;
 
-        if(_stunned) {
+        if(_stunned && _stunTimer >= 1f) {
             // die
             Die();
         } else {
