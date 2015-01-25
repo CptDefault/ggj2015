@@ -7,6 +7,8 @@ public class IntroDirector : MonoBehaviour {
 	private static IntroDirector _instance;
 	public static IntroDirector Instance {get {return _instance;}}
 
+	public GameObject CockpitExplosion;
+
 	private bool _waitingForDining;
 	private PlayerManager[] players;
 
@@ -16,6 +18,10 @@ public class IntroDirector : MonoBehaviour {
 	// Use this for initialization
 	IEnumerator Start () {
 		yield return new WaitForSeconds(5f);
+
+		CockpitExplosion.SetActive(true);
+
+		yield return new WaitForSeconds(2.5f);
 
 		AIText.ShowText("Attention Dancers of De Galaxy, a fault has been detetected in the ship's navigation systems.");
 
@@ -29,6 +35,7 @@ public class IntroDirector : MonoBehaviour {
 		AIText.ShowText("Thank you for your cooperation. Dinner is now ready in the central dining room.");
 		_instance._waitingForDining = true;
 		_instance.players = FindObjectsOfType<PlayerManager>();
+		FindObjectOfType<FoodDispenserVisual>().Dispense();
 	}
 
 	IEnumerator StartGameInt() {

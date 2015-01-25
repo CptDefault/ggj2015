@@ -27,10 +27,10 @@ public class PauseScreen : MonoBehaviour {
 			//_instance.gameObject.SetActive (true);
 			Time.timeScale = 0;
 			scale.PlayForward();
-			audio.PlayOneShot(open);
+			AudioManager.PlayClip(open);
 		} else {
 			Time.timeScale = 1;
-			audio.PlayOneShot(close);
+			AudioManager.PlayClip(close);
 			StartCoroutine(AnimateOut());
 		}
 	}
