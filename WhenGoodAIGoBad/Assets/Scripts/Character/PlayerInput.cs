@@ -37,6 +37,10 @@ public class PlayerInput : MonoBehaviour
     private bool _hasDanced; 
     private bool _hasUsedExtinguisher;
 
+    // Ending 
+    public bool IsDancing;
+    public bool InCockpit;
+
     protected void Awake()
     {
         _characterController = GetComponent<CharacterController>();
@@ -84,6 +88,7 @@ public class PlayerInput : MonoBehaviour
 
         // start dancing
         if(_inputDevice.Action4.WasPressed) {
+            IsDancing = true;
             //summon boombox
             BoomBox.SetActive(true);
             BoomBox.transform.localScale = Vector3.zero;
@@ -92,7 +97,7 @@ public class PlayerInput : MonoBehaviour
             BoomBox.audio.Play();
 
             //FindObjectOfType<GameOver>().ActivateGameOver();
-            AIText.ShowText("Stop dancing!");
+            //AIText.ShowText("Stop dancing!");
 
             if(!_hasDanced) {
                 _hasDanced = true;
@@ -103,6 +108,7 @@ public class PlayerInput : MonoBehaviour
             return;
         }
         else if (_inputDevice.Action4.WasReleased) {
+            IsDancing = false;
             BoomBox.SetActive(false);
             BoomBox.audio.Stop();
         }
@@ -208,6 +214,16 @@ public class PlayerInput : MonoBehaviour
 
         if(other.GetComponent<Fire>() != null) {
             GetStunned(other.gameObject.transform.position);
+        } 
+
+        if (other.gameObject.tag == "Cockpit") {
+               InCockpit = true;
+        }
+    }
+
+    protected void OnTriggerExit(Collider2D other) {
+        if (other.gameObject.tag == "Cockpit") {
+               InCockpit = false;
         }
     }
 
