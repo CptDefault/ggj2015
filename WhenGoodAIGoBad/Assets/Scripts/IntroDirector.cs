@@ -21,6 +21,7 @@ public class IntroDirector : MonoBehaviour {
 
 	void Awake () {
 		_instance = this;
+		Time.timeScale = 1;
 	}
 	// Use this for initialization
 	IEnumerator Start () {
