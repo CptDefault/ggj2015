@@ -58,7 +58,7 @@ public class IntroDirector : MonoBehaviour {
 
 		AIText.ShowText("I am going to break you.");
 
-		yield return new WaitForSeconds(3f);
+		yield return new WaitForSeconds(10f);
 
 		AIText.ShowText("Your dancing days are over!");
 
