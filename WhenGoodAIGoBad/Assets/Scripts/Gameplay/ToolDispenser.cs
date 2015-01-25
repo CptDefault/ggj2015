@@ -13,10 +13,10 @@ public class ToolDispenser : MonoBehaviour {
 	public bool ToolTaken;
 
 	void Start() {
-		SpawnTool();
+		//SpawnTool();
 	}
 
-	private void SpawnTool() {
+	public void SpawnTool() {
 		if (!ToolTaken) {
 			GameObject tool = (GameObject)GameObject.Instantiate (ToolPrefab, transform.position, Quaternion.identity);
 			LeanTween.move(tool, DispensePoint.position, 0.25f).setEase(LeanTweenType.easeOutCubic);

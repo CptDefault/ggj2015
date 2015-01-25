@@ -86,6 +86,12 @@ public class GameManager : MonoBehaviour
         }
         NonAgressive = false;
 
+        ToolDispenser[] dispensers = FindObjectsOfType<ToolDispenser>();
+        foreach (ToolDispenser dip in dispensers)
+        {
+            dip.SpawnTool();
+        }
+
 
         if(_audioSource != null)
             _audioSource.Stop();
@@ -113,9 +119,11 @@ public class GameManager : MonoBehaviour
 
             door.Locked = false;
         }
-        AIText.ShowText("Don't you dare dance in the cockpit!");
+        AIText.ShowTextForLonger("Don't you dare dance in the cockpit! The cockpit is not for group dancing!");
 
         IntroDirector.Instance.CockpitUnlocked = true;
+
+        yield return new WaitForSeconds(5f);
     }
 
     public void CheckLoseCondition()

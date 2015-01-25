@@ -18,10 +18,17 @@ public class AIText : MonoBehaviour {
 	public static void ShowText(string text) {
 		_instance.StopCoroutine("ShowText");
 		_instance._myText = text.ToUpper();
-		_instance.StartCoroutine("ShowText");
+		_instance.StartCoroutine("ShowText", 4f);
 	}
 
-	IEnumerator ShowText() {
+    public static void ShowTextForLonger(string text)
+    {
+        _instance.StopCoroutine("ShowText");
+        _instance._myText = text.ToUpper();
+        _instance.StartCoroutine("ShowText", 10f);
+    }
+
+	IEnumerator ShowText(float holdTime=5f) {
 		_showingText = "";
 		label.text = "";
 		//label.transform.localScale = new Vector3(0, 0.25f, 1);
@@ -40,7 +47,7 @@ public class AIText : MonoBehaviour {
 			yield return new WaitForSeconds (0.02f);
 		}
 
-		yield return new WaitForSeconds (4f);
+		yield return new WaitForSeconds (holdTime);
 
 		scale.PlayReverse();
 	}
