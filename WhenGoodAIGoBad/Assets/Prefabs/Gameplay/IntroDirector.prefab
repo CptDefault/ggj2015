@@ -177,6 +177,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CockpitExplosion: {fileID: 156594}
+  meterAlpha: {fileID: 0}
+  meterSprite: {fileID: 0}
+  CockpitUnlocked: 0
 --- !u!198 &19856594
 ParticleSystem:
   m_ObjectHideFlags: 1
