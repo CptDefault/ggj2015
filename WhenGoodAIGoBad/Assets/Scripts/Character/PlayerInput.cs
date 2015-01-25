@@ -85,7 +85,7 @@ public class PlayerInput : MonoBehaviour
             //summon boombox
             BoomBox.SetActive(true);
             BoomBox.transform.localScale = Vector3.zero;
-            LeanTween.scale(BoomBox, new Vector3(0.23f, 0.065f, 1) , 0.25f).setEase(LeanTweenType.easeOutElastic);
+            LeanTween.scale(BoomBox, new Vector3(2.5f, 1.25f, 10) , 0.25f).setEase(LeanTweenType.easeOutElastic);
 			//LeanTween.scale(BoomBox, new Vector3(0.23f, 0.065f, 1) , 0.25f).setLoopPingPong().setEase(LeanTweenType.easeOutCubic);
             BoomBox.audio.Play();
 

@@ -24,8 +24,10 @@ public class Tool : MonoBehaviour
 	    transform.parent = par;
 	    transform.localPosition = Vector2.up*.1f;
 
-		if(OnPickup != null)
+		if(OnPickup != null) {
         	OnPickup();
+            OnPickup = null;
+        }
 	}
 
     public void Drop(Vector2 pos)
