@@ -85,7 +85,7 @@ public class PlayerInput : MonoBehaviour
             //summon boombox
             BoomBox.SetActive(true);
             BoomBox.transform.localScale = Vector3.zero;
-            LeanTween.scale(BoomBox, new Vector3(0.23f, 0.065f, 1) , 0.25f).setEase(LeanTweenType.easeOutElastic);
+            LeanTween.scale(BoomBox, new Vector3(2.5f, 1.25f, 10) , 0.25f).setEase(LeanTweenType.easeOutElastic);
 			//LeanTween.scale(BoomBox, new Vector3(0.23f, 0.065f, 1) , 0.25f).setLoopPingPong().setEase(LeanTweenType.easeOutCubic);
             BoomBox.audio.Play();
 
@@ -123,7 +123,7 @@ public class PlayerInput : MonoBehaviour
             ExtinguisherParticle.Stop ();
 
             if(!_hasUsedExtinguisher && _playerManager.CarriedTool != null && _playerManager.CarriedTool.Type == Tool.ToolType.Extinguisher) {
-                _playerManager.TipLabel.text = "(Left stick) Aim\n(A) Shoot fire extinguisher";
+                _playerManager.TipLabel.text = "(A) Shoot fire extinguisher";
             }
 
         }
@@ -188,12 +188,16 @@ public class PlayerInput : MonoBehaviour
         _inputDevice = inputDevice;
     }
 
-    public void InitRepairs(RepairTrigger machine, bool canRepair) {
+    public void InitRepairs(RepairTrigger machine, bool canRepair, Tool.ToolType toolRequired) {
         _machine = machine;
         _canRepair = canRepair;
 
-        if(_canRepair)
-            _playerManager.TipLabel.text = "(A) Repair room";
+        if(_canRepair && _playerManager.CarriedTool != null) {
+            if(_playerManager.CarriedTool.Type == toolRequired)
+                _playerManager.TipLabel.text = "(A) Repair";
+            else 
+                _playerManager.TipLabel.text = "Wrong tool!";
+        }
         else
             _playerManager.TipLabel.text = "";
     }

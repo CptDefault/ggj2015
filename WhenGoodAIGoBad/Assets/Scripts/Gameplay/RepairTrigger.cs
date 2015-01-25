@@ -46,14 +46,14 @@ public class RepairTrigger : MonoBehaviour {
 	    {
 	        var playerInput = other.gameObject.GetComponent<PlayerInput>();
 	        if(playerInput != null)
-                playerInput.InitRepairs(this, true);
+                playerInput.InitRepairs(this, true, ToolRequired);
 	    }
 	}
 
 	protected void OnTriggerExit2D(Collider2D other) {
 		var playerInput = other.gameObject.GetComponent<PlayerInput>();
 	    if(playerInput != null)
-            other.gameObject.GetComponent<PlayerInput>().InitRepairs(null, false);
+            other.gameObject.GetComponent<PlayerInput>().InitRepairs(null, false, ToolRequired);
 		
 	}
 
@@ -108,6 +108,10 @@ public class RepairTrigger : MonoBehaviour {
 		Health = 1f;
         RepairEndSound.Play();
         // play some kind of sound
+
+        if(ToolRequired == Tool.ToolType.AIChip && !IntroDirector.ChipPlaced) {
+            IntroDirector.PlaceChip();
+        }
     }
 
     public void Damage(float damageAmount)

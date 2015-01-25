@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour
 
     public Door[] InterestingDoors;
 
+    public Door[] AIRoomDoors;
+
     public float RandomDamageTimer = 10;
     public float RandomDamageAmount = 0.2f;
 
@@ -44,5 +46,23 @@ public class GameManager : MonoBehaviour
 
 	        playerGO.GetComponent<PlayerInput>().SetController(inputDevice);
 	    }
+
+        StartCoroutine(MainGameCoroutine());
 	}
+
+    private IEnumerator MainGameCoroutine()
+    {
+        foreach (var door in AIRoomDoors)
+        {
+            door.Locked = true;
+        }
+
+        for (int index = 0; index < AIRoomDoors.Length; index++)
+        {
+            yield return new WaitForSeconds(5);
+            var door = AIRoomDoors[index];
+
+            door.Locked = false;
+        }
+    }
 }
