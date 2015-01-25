@@ -192,8 +192,12 @@ public class PlayerInput : MonoBehaviour
         _machine = machine;
         _canRepair = canRepair;
 
-        if(_canRepair && _playerManager.CarriedTool != null && _playerManager.CarriedTool.Type == toolRequired)
-            _playerManager.TipLabel.text = "(A) Repair";
+        if(_canRepair && _playerManager.CarriedTool != null) {
+            if(_playerManager.CarriedTool.Type == toolRequired)
+                _playerManager.TipLabel.text = "(A) Repair";
+            else 
+                _playerManager.TipLabel.text = "Wrong tool!";
+        }
         else
             _playerManager.TipLabel.text = "";
     }

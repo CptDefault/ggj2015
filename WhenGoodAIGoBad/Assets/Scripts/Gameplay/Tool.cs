@@ -22,7 +22,7 @@ public class Tool : MonoBehaviour
 	{
 	    Carried = true;
 	    transform.parent = par;
-	    transform.localPosition = Vector2.up*.1f;
+	    transform.localPosition = Vector2.up*.17f;
 
 		if(OnPickup != null) {
         	OnPickup();
