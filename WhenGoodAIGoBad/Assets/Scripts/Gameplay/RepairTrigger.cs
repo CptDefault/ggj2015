@@ -39,7 +39,14 @@ public class RepairTrigger : MonoBehaviour {
 		screenPos.y -= (Screen.height / 2.0f);
 		screenPos.y += Screen.height/15f;
 		myBar.transform.localPosition = screenPos;
+
+        SetRequiredTool(ToolRequired);
 	}
+
+    public void SetRequiredTool(Tool.ToolType type) {
+        ToolRequired = type;
+        myBar.SetRequiredSprite(type);
+    }
 
 	protected void OnTriggerEnter2D(Collider2D other) {
 	    if(Health < 1f)

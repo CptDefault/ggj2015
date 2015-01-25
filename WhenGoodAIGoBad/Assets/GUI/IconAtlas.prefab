@@ -1,51 +1,51 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &198300
+--- !u!1 &157116
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 498300}
-  - 114: {fileID: 11498300}
+  - 4: {fileID: 457116}
+  - 114: {fileID: 11457116}
   m_Layer: 0
-  m_Name: GameAtlas
+  m_Name: IconAtlas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &498300
+--- !u!4 &457116
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 198300}
+  m_GameObject: {fileID: 157116}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!114 &11498300
+--- !u!114 &11457116
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 198300}
+  m_GameObject: {fileID: 157116}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4d0c51bb0b6e93049af5e88f93826e3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  material: {fileID: 2100000, guid: 86260335832854020ba9beee8f7208bb, type: 2}
+  material: {fileID: 2100000, guid: a857566fac1bd4318927b4c1cd273c2b, type: 2}
   mSprites:
-  - name: buttonA
-    x: 995
-    y: 940
-    width: 26
-    height: 26
+  - name: aiChip
+    x: 0
+    y: 4
+    width: 14
+    height: 14
     borderLeft: 0
     borderRight: 0
     borderTop: 0
@@ -54,48 +54,35 @@ MonoBehaviour:
     paddingRight: 1
     paddingTop: 1
     paddingBottom: 1
-  - name: buttonB
-    x: 898
-    y: 901
-    width: 26
-    height: 26
+  - name: battery
+    x: 28
+    y: 26
+    width: 16
+    height: 9
     borderLeft: 0
     borderRight: 0
     borderTop: 0
     borderBottom: 0
-    paddingLeft: 1
-    paddingRight: 1
-    paddingTop: 1
-    paddingBottom: 1
-  - name: buttonY
-    x: 995
-    y: 996
-    width: 28
-    height: 28
-    borderLeft: 1
-    borderRight: 1
-    borderTop: 1
-    borderBottom: 1
     paddingLeft: 0
     paddingRight: 0
-    paddingTop: 0
-    paddingBottom: 0
-  - name: coders_crux_bitmap
-    x: 770
-    y: 897
-    width: 127
-    height: 127
+    paddingTop: 4
+    paddingBottom: 3
+  - name: fireExtinguisher
+    x: 17
+    y: 20
+    width: 10
+    height: 15
     borderLeft: 0
     borderRight: 0
     borderTop: 0
     borderBottom: 0
-    paddingLeft: 0
-    paddingRight: 1
-    paddingTop: 1
-    paddingBottom: 0
-  - name: iconHolderRED
-    x: 995
-    y: 967
+    paddingLeft: 4
+    paddingRight: 2
+    paddingTop: 0
+    paddingBottom: 1
+  - name: iconHolder
+    x: 0
+    y: 36
     width: 28
     height: 28
     borderLeft: 0
@@ -106,41 +93,28 @@ MonoBehaviour:
     paddingRight: 2
     paddingTop: 2
     paddingBottom: 2
-  - name: menuBG
+  - name: iconHolderRED
+    x: 29
+    y: 36
+    width: 28
+    height: 28
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 2
+    paddingRight: 2
+    paddingTop: 2
+    paddingBottom: 2
+  - name: spanner
     x: 0
-    y: 512
-    width: 512
-    height: 512
-    borderLeft: 30
-    borderRight: 30
-    borderTop: 30
-    borderBottom: 30
-    paddingLeft: 0
-    paddingRight: 0
-    paddingTop: 0
-    paddingBottom: 0
-  - name: speechBackground
-    x: 513
-    y: 768
-    width: 256
-    height: 256
-    borderLeft: 7
-    borderRight: 7
-    borderTop: 7
-    borderBottom: 7
-    paddingLeft: 0
-    paddingRight: 0
-    paddingTop: 0
-    paddingBottom: 0
-  - name: white
-    x: 898
-    y: 928
-    width: 96
-    height: 96
-    borderLeft: 2
-    borderRight: 2
-    borderTop: 2
-    borderBottom: 2
+    y: 19
+    width: 16
+    height: 16
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
     paddingLeft: 0
     paddingRight: 0
     paddingTop: 0
@@ -158,6 +132,6 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 198300}
+  m_RootGameObject: {fileID: 157116}
   m_IsPrefabParent: 1
   m_IsExploded: 1
