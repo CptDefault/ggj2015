@@ -9,7 +9,7 @@ public class Tool : MonoBehaviour
     public Action OnPickup;
 
     public enum ToolType {
-        Generic, Battery, Extinguisher
+        Generic, Battery, Extinguisher, AIChip
     };
 
     public ToolType Type;

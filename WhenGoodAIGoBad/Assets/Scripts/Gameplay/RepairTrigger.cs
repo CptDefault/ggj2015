@@ -108,6 +108,10 @@ public class RepairTrigger : MonoBehaviour {
 		Health = 1f;
         RepairEndSound.Play();
         // play some kind of sound
+
+        if(ToolRequired == Tool.ToolType.AIChip && !IntroDirector.ChipPlaced) {
+            IntroDirector.PlaceChip();
+        }
     }
 
     public void Damage(float damageAmount)

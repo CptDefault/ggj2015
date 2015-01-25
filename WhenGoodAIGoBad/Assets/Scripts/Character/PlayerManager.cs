@@ -15,6 +15,8 @@ public class PlayerManager : MonoBehaviour
     private UILabel _tipLabel;
     public UILabel TipLabel { get {return _tipLabel;}}
 
+    public bool InDiningRoom;
+
     public void Awake () {
         if(_tipLabel == null)
             _tipLabel = (GameObject.Instantiate(TipPrefab) as GameObject).GetComponent<UILabel>();
@@ -61,6 +63,10 @@ public class PlayerManager : MonoBehaviour
             _overTool = tool;
             _tipLabel.text = "(B) Pickup/drop item";
         }
+
+        if(col.gameObject.tag == "DiningRoom") {
+            InDiningRoom = true;
+        }
     }
     protected void OnTriggerExit2D(Collider2D col)
     {
@@ -70,6 +76,10 @@ public class PlayerManager : MonoBehaviour
             _overTool = null;
             if(_carriedTool == null || _carriedTool.Type != Tool.ToolType.Extinguisher)
                 _tipLabel.text = "";
+        }
+
+        if(col.gameObject.tag == "DiningRoom") {
+            InDiningRoom = false;
         }
     }
 
