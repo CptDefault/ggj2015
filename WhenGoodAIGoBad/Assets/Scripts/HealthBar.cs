@@ -11,7 +11,7 @@ public class HealthBar : MonoBehaviour {
 	public void SetRequiredSprite(Tool.ToolType type) {
 		switch(type) {
 			case Tool.ToolType.Generic:
-				needToolSprite.spriteName = "generic";
+				needToolSprite.spriteName = "spanner";
 				break;
 			case Tool.ToolType.Battery:
 				needToolSprite.spriteName = "battery";
