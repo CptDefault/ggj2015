@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
     public AudioClipContainer MedLoop;
     public AudioClipContainer HighLoop;
     private AudioSource _audioSource;
+    private RepairTrigger[] _repairTriggers;
 
     public bool NonAgressive { get; private set; }
 
@@ -46,6 +47,7 @@ public class GameManager : MonoBehaviour
         _aiController = FindObjectOfType<AIController>();
         _alien = FindObjectOfType<Alien>();
         _alien.gameObject.SetActive(false);
+        _repairTriggers = FindObjectsOfType<RepairTrigger>();
     }
 
     protected void Start()
@@ -90,7 +92,6 @@ public class GameManager : MonoBehaviour
         _audioSource = MedLoop.Play();
 
         _startTime = Time.time;
-        _alien.gameObject.SetActive(true);
 
         for (int index = 0; index < AIRoomDoors.Length; index++)
         {
@@ -115,5 +116,20 @@ public class GameManager : MonoBehaviour
         AIText.ShowText("Don't you dare dance in the cockpit!");
 
         IntroDirector.Instance.CockpitUnlocked = true;
+    }
+
+    public void CheckLoseCondition()
+    {
+        int dead = 0;
+        foreach (var repairTrigger in _repairTriggers)
+        {
+            if (repairTrigger.Health <= 0.05f)
+                dead++;
+        }
+
+        if (dead >= _repairTriggers.Length - 2)
+        {
+            FindObjectOfType<GameOver>().ActivateGameOver();
+        }
     }
 }

@@ -177,9 +177,10 @@ public class PlayerInput : MonoBehaviour
                 RaycastHit2D hit = Physics2D.Raycast(transform.position, ExtinguisherRayCast.position-transform.position, 4f, 1 << 8);
                 if (hit.collider != null) {
                     DamageSprite.enabled = true;
-					hit.collider.gameObject.collider2D.enabled = false;
-					LeanTween.alpha(hit.collider.gameObject, 0, 0.5f);
-                    Destroy(hit.collider.gameObject, 0.6f);
+					//hit.collider.gameObject.collider2D.enabled = false;
+                    hit.collider.gameObject.SetActive(false);
+					//LeanTween.alpha(hit.collider.gameObject, 0, 0.5f);
+                    //Destroy(hit.collider.gameObject, 0.6f);
                 }
             }
             else if (_inputDevice.Action1.WasReleased) {
@@ -250,6 +251,10 @@ public class PlayerInput : MonoBehaviour
             // DROP IT LIKE ITS HOT
             if(_playerManager.CarriedTool != null) 
                 _playerManager.PickupDropItem();
+
+            ExtinguisherParticle.Stop();
+            ExtinguisherParticle.Clear();
+            ExtinguisherParticle.audio.Stop();
         }
     }
 

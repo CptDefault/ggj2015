@@ -25,10 +25,10 @@ public class IntroDirector : MonoBehaviour {
 	// Use this for initialization
 	IEnumerator Start () {
 		
-		yield return new WaitForSeconds(5f);
+		yield return new WaitForSeconds(10f);
 
 		CockpitExplosion.SetActive(true);
-		GameObject.FindGameObjectWithTag ("Cockpit").GetComponent<RepairTrigger> ().Health = 0.5f;
+		GameObject.FindGameObjectWithTag ("Cockpit").GetComponent<RepairTrigger> ().SetHealth(0.5f);
 
 		yield return new WaitForSeconds(2.5f);
 
@@ -54,6 +54,8 @@ public class IntroDirector : MonoBehaviour {
 	IEnumerator StartGameInt() {
 		// turn on the AI, lock the doors
 
+        meterAlpha.PlayForward();
+        GameManager.Instance.StartMainGame();
 		yield return new WaitForSeconds(3f);
 
 		AIText.ShowText("I am going to break you.");
@@ -63,10 +65,6 @@ public class IntroDirector : MonoBehaviour {
 		AIText.ShowText("Your dancing days are over!");
 
 		// play music
-
-	    meterAlpha.PlayForward();
-
-	    GameManager.Instance.StartMainGame();
 	}
 
 	void Update()

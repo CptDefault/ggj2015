@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using Object = UnityEngine.Object;
 
 public class RepairTrigger : MonoBehaviour {
 	public Tool.ToolType ToolRequired;
@@ -79,7 +80,9 @@ public class RepairTrigger : MonoBehaviour {
 
             if (Health < 0) {
             	ExplodeSound.Play();
-            	Destroy(GameObject.Instantiate(ExplosionPrefab), 2f);
+            	Destroy(Instantiate(ExplosionPrefab, transform.position, ExplosionPrefab.transform.rotation), 2f);
+
+                GameManager.Instance.CheckLoseCondition();
             }
                 
         }
@@ -125,5 +128,11 @@ public class RepairTrigger : MonoBehaviour {
     public void Damage(float damageAmount)
     {
         Health *= 1 - damageAmount;
+    }
+
+    public void SetHealth(float f)
+    {
+        Health = f;
+        OnIncrementHealth(Health);
     }
 }

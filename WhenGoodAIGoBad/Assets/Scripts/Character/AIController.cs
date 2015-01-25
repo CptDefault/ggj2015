@@ -76,12 +76,25 @@ public class AIController : MonoBehaviour
         if (_path == null || _pathInd >= _path.Count)
         {
             int attempts = 10;
-            while((_target == null || _target.Health < .9f) && attempts-- > 0)
-                _target = _repairTriggers[Random.Range(0, _repairTriggers.Length)];
-            _path = AIPathfinding.PathToPoint(transform.position, _target.transform.position, true);
-            _pathInd = 0;
-            _goal = Goal.BombTarget;
 
+            if (Random.value > 0.5f)
+            {
+                while ((_target == null || _target.Health < .9f || _target.ToolRequired == Tool.ToolType.AIChip) &&
+                       attempts-- > 0)
+                    _target = _repairTriggers[Random.Range(0, _repairTriggers.Length)];
+                _path = AIPathfinding.PathToPoint(transform.position, _target.transform.position, true);
+                _pathInd = 0;
+                _goal = Goal.BombTarget;
+            }
+            else
+            {
+                Room room = null;
+                while ((room == null || room.Fire.Count == 0) && attempts-- > 0)
+                    room = GameManager.Instance.Rooms[Random.Range(0, GameManager.Instance.Rooms.Count)];
+                _path = AIPathfinding.PathToPoint(transform.position, room.transform.position, true);
+                _pathInd = 0;
+                _goal = Goal.LightFire;
+            }
             _doorStage = DoorStage.Start;
             var dr = _path[_pathInd] as Door;
             if (dr != null)

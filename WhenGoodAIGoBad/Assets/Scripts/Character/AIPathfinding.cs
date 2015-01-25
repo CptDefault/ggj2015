@@ -24,7 +24,9 @@ public static class AIPathfinding
 
 	    HashSet<Room> closed = new HashSet<Room>();
         List<RoomCostPair> frontier = new List<RoomCostPair>{new RoomCostPair(startRoom, 0, new List<ITraversable>{startRoom})};
- 
+
+	    int attempts = 100;
+
         while (frontier.Count > 0)
         {
             RoomCostPair node = frontier[0];
@@ -55,6 +57,8 @@ public static class AIPathfinding
 
                 frontier.Add(next);
             }
+            if(attempts-- == 0)
+                break;
         }
 	    return new List<ITraversable>{startRoom};
 	}
