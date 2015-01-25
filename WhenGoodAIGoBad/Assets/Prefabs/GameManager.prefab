@@ -1,13 +1,13 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &119898
+--- !u!1 &121272
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 419898}
+  - 4: {fileID: 421272}
   m_Layer: 0
   m_Name: SpawnPoint
   m_TagString: Untagged
@@ -15,14 +15,14 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &119900
+--- !u!1 &121274
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 419900}
+  - 4: {fileID: 421274}
   m_Layer: 0
   m_Name: SpawnPoint
   m_TagString: Untagged
@@ -30,14 +30,14 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &119902
+--- !u!1 &121276
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 419902}
+  - 4: {fileID: 421276}
   m_Layer: 0
   m_Name: SpawnPoint
   m_TagString: Untagged
@@ -45,14 +45,14 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &119904
+--- !u!1 &121278
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 419904}
+  - 4: {fileID: 421278}
   m_Layer: 0
   m_Name: SpawnPoint
   m_TagString: Untagged
@@ -77,50 +77,50 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &419898
+--- !u!4 &421272
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 119898}
+  m_GameObject: {fileID: 121272}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.19999981, y: -10.9700003, z: 0}
+  m_LocalPosition: {x: -7.19999981, y: 9.23999977, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 495674}
   m_RootOrder: 2
---- !u!4 &419900
+--- !u!4 &421274
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 119900}
+  m_GameObject: {fileID: 121274}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.76999998, y: -10.8800001, z: 0}
+  m_LocalPosition: {x: 15.5799999, y: -12.54, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 495674}
   m_RootOrder: 3
---- !u!4 &419902
+--- !u!4 &421276
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 119902}
+  m_GameObject: {fileID: 121276}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.72000003, y: -11.21, z: 0}
+  m_LocalPosition: {x: -17.1700001, y: -.639999986, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 495674}
   m_RootOrder: 0
---- !u!4 &419904
+--- !u!4 &421278
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 119904}
+  m_GameObject: {fileID: 121278}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -.0599999987, y: -11.0299997, z: 0}
+  m_LocalPosition: {x: -25.6900005, y: -7.0999999, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 495674}
@@ -135,10 +135,10 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 419902}
-  - {fileID: 419904}
-  - {fileID: 419898}
-  - {fileID: 419900}
+  - {fileID: 421276}
+  - {fileID: 421278}
+  - {fileID: 421272}
+  - {fileID: 421274}
   m_Father: {fileID: 0}
   m_RootOrder: 0
 --- !u!114 &11472532
@@ -175,10 +175,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerPrefab: {fileID: 112104, guid: 7ffbc0e646098af4ba6c456dfb599d60, type: 2}
   SpawnPoints:
-  - {fileID: 419902}
-  - {fileID: 419904}
-  - {fileID: 419898}
-  - {fileID: 419900}
+  - {fileID: 421276}
+  - {fileID: 421278}
+  - {fileID: 421272}
+  - {fileID: 421274}
   InterestingDoors:
   - {fileID: 0}
   - {fileID: 0}
@@ -186,7 +186,11 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  AIRoomDoors: []
+  AIRoomDoors:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   RandomDamageTimer: 10
   RandomDamageAmount: .200000003
 --- !u!1001 &100100000

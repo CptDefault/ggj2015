@@ -70,7 +70,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &152138
 GameObject:
   m_ObjectHideFlags: 1
@@ -152,7 +152,7 @@ Transform:
   m_GameObject: {fileID: 149692}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -.120000005, y: -.0709999949, z: 0}
-  m_LocalScale: {x: .200000003, y: .0500000007, z: 1}
+  m_LocalScale: {x: 2.5, y: 1.25, z: 1}
   m_Children:
   - {fileID: 452138}
   m_Father: {fileID: 412104}
@@ -389,6 +389,14 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 35972b3ba64490e4aa027b2e9c60d9f4, type: 3}
     - {fileID: 21300000, guid: cea3cb482f7a441498ae1577a135c2ed, type: 3}
     - {fileID: 21300000, guid: 8d87fcffdc4d67145b9e98ce6d6a1990, type: 3}
+    AnimType: 1
+  - FrameRate: 12
+    Heading: {x: 1, y: 1}
+    Frames:
+    - {fileID: 21300000, guid: 7f517da00163ba94c987c4f92a39ef0b, type: 3}
+    - {fileID: 21300000, guid: 145d8cc85c78f204fb71c0255bfcd91b, type: 3}
+    - {fileID: 21300000, guid: 536bf9bac4d8a944aa75674dccb8bfd9, type: 3}
+    - {fileID: 21300000, guid: d11e2970698cb7b478c6b500b4c01f3f, type: 3}
     AnimType: 1
   Renderer: {fileID: 21247846}
 --- !u!114 &11412108
@@ -2599,8 +2607,8 @@ SpriteRenderer:
   m_ScaleInLightmap: 1
   m_SortingLayerID: 0
   m_SortingOrder: 100
-  m_Sprite: {fileID: 21300000, guid: 12302ab9b8768a0478337d2761ac8c33, type: 3}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 09de5bee333234bd2aaaddc0a5f2613b, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

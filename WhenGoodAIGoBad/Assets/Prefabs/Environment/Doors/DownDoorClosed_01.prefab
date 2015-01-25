@@ -211,12 +211,12 @@ MonoBehaviour:
   Center: {x: 0, y: 0}
   Facing: {x: 1, y: 0}
   LockSound:
-    clip: {fileID: 8300000, guid: bf6a59bba152fec4e854cd87c624a492, type: 3}
+    clip: {fileID: 8300000, guid: 06e138bc3d1bbdc47820fb0ec807b5f6, type: 3}
     volume: 1
     minPitch: 1
     maxPitch: 1
   OpenSound:
-    clip: {fileID: 8300000, guid: d964c115e92fbc14499a4ee82c8a2e43, type: 3}
+    clip: {fileID: 8300000, guid: dfaaa27b738f0674e8250164547a2931, type: 3}
     volume: 1
     minPitch: 1
     maxPitch: 1
