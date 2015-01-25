@@ -19,7 +19,12 @@ public class GameManager : MonoBehaviour
 
     public float RandomDamageTimer = 10;
     public float RandomDamageAmount = 0.2f;
+    private float _startTime;
+    private int _roundDuration = 45;
+    private AIController _aiController;
+    private Alien _alien;
 
+    public bool NonAgressive { get; private set; }
 
 
     public static void RegisterRoom(Room room)
@@ -33,6 +38,10 @@ public class GameManager : MonoBehaviour
     protected void Awake()
     {
         Instance = this;
+        NonAgressive = true;
+        _aiController = FindObjectOfType<AIController>();
+        _alien = FindObjectOfType<Alien>();
+        _alien.gameObject.SetActive(false);
     }
 
     protected void Start()
@@ -46,9 +55,17 @@ public class GameManager : MonoBehaviour
 
 	        playerGO.GetComponent<PlayerInput>().SetController(inputDevice);
 	    }
-
-        StartCoroutine(MainGameCoroutine());
 	}
+
+    public float GetProgress()
+    {
+        return (Time.time - _startTime)/(_roundDuration*4);
+    }
+
+    public void StartMainGame()
+    {
+        StartCoroutine(MainGameCoroutine());
+    }
 
     private IEnumerator MainGameCoroutine()
     {
@@ -56,11 +73,19 @@ public class GameManager : MonoBehaviour
         {
             door.Locked = true;
         }
+        NonAgressive = false;
+
+        _startTime = Time.time;
 
         for (int index = 0; index < AIRoomDoors.Length; index++)
         {
-            yield return new WaitForSeconds(5);
+            yield return new WaitForSeconds(_roundDuration);
             var door = AIRoomDoors[index];
+
+            _aiController.LevelUp();
+
+            if(index == 3)
+                _alien.gameObject.SetActive(true);
 
             door.Locked = false;
         }

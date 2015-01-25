@@ -49,8 +49,11 @@ public class AIController : MonoBehaviour
     {
         _targetPlayer = player;
         _goal = Goal.HuntPlayer;
-        _path = AIPathfinding.PathToPoint(transform.position, _targetPlayer.transform.position);
+        _path = AIPathfinding.PathToPoint(transform.position, _targetPlayer.transform.position, true);
         _pathInd = 0;
+
+        //_characterController.MoveSpeed += 0.2f;
+        //_characterController.Acceleration *= 0.4f;
     }
 
     protected void OnDrawGizmos()
@@ -75,7 +78,7 @@ public class AIController : MonoBehaviour
             int attempts = 10;
             while((_target == null || _target.Health < .9f) && attempts-- > 0)
                 _target = _repairTriggers[Random.Range(0, _repairTriggers.Length)];
-            _path = AIPathfinding.PathToPoint(transform.position, _target.transform.position);
+            _path = AIPathfinding.PathToPoint(transform.position, _target.transform.position, true);
             _pathInd = 0;
             _goal = Goal.BombTarget;
 
@@ -138,21 +141,29 @@ public class AIController : MonoBehaviour
 
         if (_pathInd >= _path.Count)
         {
+            if(GameManager.Instance.NonAgressive)
+                return;
+
             switch (_goal)
             {
                 case Goal.BombTarget:
                     _target.Damage(0.3f);
                     break;
                 case Goal.LightFire:
+                    var fires2 = _characterController.Room.Fire;
+                    if(fires2.Count > 0)
+                        fires2[Random.Range(0, fires2.Count)].gameObject.SetActive(true);
                     break;
                 case Goal.HuntPlayer:
-                    if (_targetPlayer.GetComponent<CharacterController>().Room == _characterController.Room)
+                    if (_targetPlayer.Character.Room == _characterController.Room)
                     {
                         foreach (var door in _characterController.Room.Doors)
                         {
                             door.LockFor(6);
                         }
-
+                        var fires = _characterController.Room.Fire;
+                        if(fires.Count > 0)
+                            fires[Random.Range(0, fires.Count)].gameObject.SetActive(true);
                     }
                     break;
                 case Goal.LockDoors:
@@ -161,5 +172,11 @@ public class AIController : MonoBehaviour
                     throw new ArgumentOutOfRangeException();
             }
         }
+    }
+
+    public void LevelUp()
+    {
+        _characterController.MoveSpeed *= 1.2f;
+        _characterController.Acceleration *= 1.4f;
     }
 }

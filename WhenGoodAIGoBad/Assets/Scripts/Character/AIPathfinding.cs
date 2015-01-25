@@ -17,7 +17,7 @@ public static class AIPathfinding
         }
     }
 
-	public static List<ITraversable> PathToPoint(Vector3 startPosition, Vector3 endPosition)
+	public static List<ITraversable> PathToPoint(Vector3 startPosition, Vector3 endPosition, bool throughLocked = false)
 	{
         Room startRoom = FindRoom(startPosition);
         Room goalRoom = FindRoom(endPosition);
@@ -42,6 +42,9 @@ public static class AIPathfinding
 
             foreach (var door in node.Room.Doors)
             {
+                if(door.Locked && !throughLocked)
+                    continue;
+
                 var room = door.Rooms[door.Rooms[0] == node.Room ? 1 : 0];
                 var next = new RoomCostPair(room, node.Cost, new List<ITraversable>(node.Path));
                 next.Cost += Vector3.Distance(node.Room.transform.position, door.transform.position);

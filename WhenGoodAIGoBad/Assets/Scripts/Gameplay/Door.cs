@@ -23,6 +23,7 @@ public class Door : MonoBehaviour, ITraversable
     private float _unlockTime;
     private bool _aiOverride;
     private bool _supressSound;
+    private static bool _playedThisFrame;
 
     protected void Awake()
     {
@@ -133,8 +134,11 @@ public class Door : MonoBehaviour, ITraversable
             if (_locked && !_aiOverride)
                 value = false;
 
-            if(_open != value && !_supressSound)
+            if (_open != value && !_supressSound && !_playedThisFrame)
+            {
                 (value ? OpenSound : LockSound).Play();
+                _playedThisFrame = true;
+            }
 
             _open = value;
 
@@ -147,6 +151,11 @@ public class Door : MonoBehaviour, ITraversable
 
             if (DoorCollider != null) DoorCollider.enabled = !_open;
         }
+    }
+
+    protected void Update()
+    {
+        _playedThisFrame = false;
     }
 
     protected void OnTriggerEnter2D(Collider2D col)
