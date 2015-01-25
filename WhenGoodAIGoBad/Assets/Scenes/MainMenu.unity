@@ -86,6 +86,7 @@ GameObject:
   - 114: {fileID: 40644738}
   - 114: {fileID: 40644742}
   - 114: {fileID: 40644741}
+  - 82: {fileID: 40644743}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -202,6 +203,64 @@ MonoBehaviour:
   useFixedUpdate: 0
   dontDestroyOnLoad: 0
   customProfiles: []
+--- !u!82 &40644743
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 40644737}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_audioClip: {fileID: 8300000, guid: 86f06a8dc1ea18249a6846cf4b9897bf, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
 --- !u!1 &181108839
 GameObject:
   m_ObjectHideFlags: 0
@@ -226,7 +285,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 181108839}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7, y: -104.177505, z: 0}
+  m_LocalPosition: {x: 7, y: -151.194214, z: 0}
   m_LocalScale: {x: 1.02578497, y: 1.02578485, z: 1.02578485}
   m_Children: []
   m_Father: {fileID: 1133518875}
@@ -299,7 +358,7 @@ MonoBehaviour:
   updateAnchors: 1
   mColor: {r: 1, g: 1, b: 1, a: 0}
   mPivot: 4
-  mWidth: 273
+  mWidth: 463
   mHeight: 62
   mDepth: 2
   autoResizeBoxCollider: 0
@@ -431,8 +490,8 @@ MonoBehaviour:
   updateAnchors: 1
   mColor: {r: 1, g: 1, b: 1, a: 0}
   mPivot: 4
-  mWidth: 533
-  mHeight: 263
+  mWidth: 731
+  mHeight: 361
   mDepth: 0
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -485,7 +544,7 @@ Transform:
   m_GameObject: {fileID: 429134947}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: .00450450461, y: .00450450461, z: .00450450461}
+  m_LocalScale: {x: .00360360369, y: .00360360369, z: .00360360369}
   m_Children:
   - {fileID: 40644740}
   - {fileID: 1133518875}
@@ -668,8 +727,8 @@ MonoBehaviour:
   updateAnchors: 1
   mColor: {r: 1, g: 1, b: 1, a: 0}
   mPivot: 4
-  mWidth: 517
-  mHeight: 255
+  mWidth: 707
+  mHeight: 349
   mDepth: 1
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -921,8 +980,8 @@ MonoBehaviour:
   updateAnchors: 1
   mColor: {r: 1, g: 1, b: 1, a: 0}
   mPivot: 4
-  mWidth: 523
-  mHeight: 258
+  mWidth: 713
+  mHeight: 352
   mDepth: 1
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0

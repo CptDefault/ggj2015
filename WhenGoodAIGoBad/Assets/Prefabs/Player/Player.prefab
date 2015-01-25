@@ -403,12 +403,14 @@ MonoBehaviour:
     minPitch: 1
     maxPitch: 1
   DieSound:
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: 2108eed71bd02fb458c08ef3768b67f6, type: 3}
     volume: 1
     minPitch: 1
     maxPitch: 1
   pickupSound: {fileID: 8300000, guid: e071fdbe6f1d827408e715f708d4e62c, type: 3}
   dropSound: {fileID: 8300000, guid: 5613a6a3eac70aa48841d35b9c538516, type: 3}
+  IsDancing: 0
+  InCockpit: 0
 --- !u!114 &11412106
 MonoBehaviour:
   m_ObjectHideFlags: 1

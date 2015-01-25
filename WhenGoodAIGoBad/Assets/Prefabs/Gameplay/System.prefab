@@ -59,12 +59,12 @@ MonoBehaviour:
   BurnTime: 10
   RepairTime: 8
   RepairSound:
-    clip: {fileID: 8300000, guid: 11b542238a943d546be31fc25f9c477e, type: 3}
+    clip: {fileID: 8300000, guid: 6528357ee9083644aa1971e06bdf7f5b, type: 3}
     volume: 1
     minPitch: 1
     maxPitch: 1
   RepairEndSound:
-    clip: {fileID: 8300000, guid: a43bd6e04d9a81340982637e4ab694f7, type: 3}
+    clip: {fileID: 0}
     volume: 1
     minPitch: 1
     maxPitch: 1

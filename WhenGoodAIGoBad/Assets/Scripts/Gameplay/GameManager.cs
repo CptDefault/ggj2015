@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     private int _roundDuration = 45;
     private AIController _aiController;
     private Alien _alien;
+    public AudioClipContainer IntroLoop;
     public AudioClipContainer MedLoop;
     public AudioClipContainer HighLoop;
     private AudioSource _audioSource;
@@ -49,6 +50,11 @@ public class GameManager : MonoBehaviour
 
     protected void Start()
 	{
+
+        if (_audioSource != null)
+            _audioSource.Stop();
+        _audioSource = IntroLoop.Play();
+
 	    for (int i = 0; i < InputManager.Devices.Count; i++)
 	    {
 	        var inputDevice = InputManager.Devices[i];
@@ -84,6 +90,7 @@ public class GameManager : MonoBehaviour
         _audioSource = MedLoop.Play();
 
         _startTime = Time.time;
+        _alien.gameObject.SetActive(true);
 
         for (int index = 0; index < AIRoomDoors.Length; index++)
         {
@@ -92,7 +99,7 @@ public class GameManager : MonoBehaviour
 
             _aiController.LevelUp();
 
-            if (index == 2)
+            if (index == 1)
             {
 
                 if (_audioSource != null)
@@ -100,12 +107,13 @@ public class GameManager : MonoBehaviour
                 _audioSource = HighLoop.Play();
             }
 
-            if(index == 3)
+            if(index == 2)
                 _alien.gameObject.SetActive(true);
 
             door.Locked = false;
         }
+        AIText.ShowText("Don't you dare dance in the cockpit!");
 
-
+        IntroDirector.Instance.CockpitUnlocked = true;
     }
 }

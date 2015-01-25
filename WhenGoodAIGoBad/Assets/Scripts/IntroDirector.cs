@@ -108,5 +108,6 @@ public class IntroDirector : MonoBehaviour {
 		yield return new WaitForSeconds(2f);
 
 		// game over, you win
+        Application.LoadLevel(Application.loadedLevel + 1);
 	}
 }
