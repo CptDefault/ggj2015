@@ -63,19 +63,23 @@ public class IntroDirector : MonoBehaviour {
 
 		// play music
 
-		meterAlpha.PlayForward();
+	    meterAlpha.PlayForward();
 
+	    GameManager.Instance.StartMainGame();
 	}
 
-	void Update() {
-		if(_waitingForDining) {
+	void Update()
+	{
+	    if (!ChipPlaced && Input.GetKeyDown(KeyCode.P))
+	        PlaceChip();
+		else if(_waitingForDining) {
 			var count = 0;
 			foreach(PlayerManager p in players) {
 				if(p.InDiningRoom)
 					count++;
 			}
 
-			if(count >= players.Length) {
+			if(count >= players.Length ||  Input.GetKeyDown(KeyCode.P)) {
 				_waitingForDining = false;
 				StartCoroutine(StartGameInt());
 			}
@@ -93,6 +97,8 @@ public class IntroDirector : MonoBehaviour {
 				StartCoroutine(ActivateEnding());
 			}
 		}
+
+	    meterSprite.fillAmount = GameManager.Instance.GetProgress();
 	}
 
 	IEnumerator ActivateEnding() {

@@ -22,6 +22,7 @@ public class RepairTrigger : MonoBehaviour {
     private AudioSource _audio;
 
     public GameObject ExplosionPrefab;
+    public bool Burn = true;
 
 
     void Start () {
@@ -66,7 +67,7 @@ public class RepairTrigger : MonoBehaviour {
 
     protected void Update()
     {
-        if (Health < 0.95f && Health > 0)
+        if (Health < 0.95f && Health > 0 && Burn)
         {
             Health -= 1/BurnTime/2 * Time.deltaTime;
             OnIncrementHealth(Health);

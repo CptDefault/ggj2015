@@ -221,7 +221,7 @@ public class PlayerInput : MonoBehaviour
         }
     }
 
-    protected void OnTriggerExit(Collider2D other) {
+    protected void OnTriggerExit2D(Collider2D other) {
         if (other.gameObject.tag == "Cockpit") {
                InCockpit = false;
         }

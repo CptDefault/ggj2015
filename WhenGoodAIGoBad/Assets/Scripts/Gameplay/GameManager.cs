@@ -23,6 +23,9 @@ public class GameManager : MonoBehaviour
     private int _roundDuration = 45;
     private AIController _aiController;
     private Alien _alien;
+    public AudioClipContainer MedLoop;
+    public AudioClipContainer HighLoop;
+    private AudioSource _audioSource;
 
     public bool NonAgressive { get; private set; }
 
@@ -59,7 +62,7 @@ public class GameManager : MonoBehaviour
 
     public float GetProgress()
     {
-        return (Time.time - _startTime)/(_roundDuration*4);
+        return Mathf.Clamp01((Time.time - _startTime)/(_roundDuration*4));
     }
 
     public void StartMainGame()
@@ -75,6 +78,11 @@ public class GameManager : MonoBehaviour
         }
         NonAgressive = false;
 
+
+        if(_audioSource != null)
+            _audioSource.Stop();
+        _audioSource = MedLoop.Play();
+
         _startTime = Time.time;
 
         for (int index = 0; index < AIRoomDoors.Length; index++)
@@ -84,10 +92,20 @@ public class GameManager : MonoBehaviour
 
             _aiController.LevelUp();
 
+            if (index == 2)
+            {
+
+                if (_audioSource != null)
+                    _audioSource.Stop();
+                _audioSource = HighLoop.Play();
+            }
+
             if(index == 3)
                 _alien.gameObject.SetActive(true);
 
             door.Locked = false;
         }
+
+
     }
 }

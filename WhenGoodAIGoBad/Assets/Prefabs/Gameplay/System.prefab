@@ -74,13 +74,14 @@ MonoBehaviour:
     minPitch: 1
     maxPitch: 1
   ExplosionPrefab: {fileID: 141326, guid: abcf844543a7e43e3969aa66dd1f206f, type: 2}
+  Burn: 1
 --- !u!212 &21224384
 SpriteRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 124384}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_LightmapIndex: 255
