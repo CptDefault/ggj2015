@@ -28,6 +28,7 @@ public class IntroDirector : MonoBehaviour {
 		yield return new WaitForSeconds(5f);
 
 		CockpitExplosion.SetActive(true);
+		GameObject.FindGameObjectWithTag ("Cockpit").GetComponent<RepairTrigger> ().Health = 0.5f;
 
 		yield return new WaitForSeconds(2.5f);
 
