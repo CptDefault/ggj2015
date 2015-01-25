@@ -123,7 +123,7 @@ public class PlayerInput : MonoBehaviour
             ExtinguisherParticle.Stop ();
 
             if(!_hasUsedExtinguisher && _playerManager.CarriedTool != null && _playerManager.CarriedTool.Type == Tool.ToolType.Extinguisher) {
-                _playerManager.TipLabel.text = "(Left stick) Aim\n(A) Shoot fire extinguisher";
+                _playerManager.TipLabel.text = "(A) Shoot fire extinguisher";
             }
 
         }
@@ -193,7 +193,7 @@ public class PlayerInput : MonoBehaviour
         _canRepair = canRepair;
 
         if(_canRepair && _playerManager.CarriedTool != null && _playerManager.CarriedTool.Type == toolRequired)
-            _playerManager.TipLabel.text = "(A) Repair room";
+            _playerManager.TipLabel.text = "(A) Repair";
         else
             _playerManager.TipLabel.text = "";
     }
