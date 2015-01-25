@@ -7,7 +7,7 @@ public class PlayerInput : MonoBehaviour
     private CharacterController _characterController;
     private InputDevice _inputDevice;
     private PlayerManager _playerManager;
-	private SpriteRenderer _sprite;
+	public SpriteRenderer DamageSprite;
     // Repairing functions
     private bool _canRepair = false;
     private RepairTrigger _machine;
@@ -24,7 +24,7 @@ public class PlayerInput : MonoBehaviour
     public GameObject BoomBox;
 
     // Health + Damage
-    private bool _alive = true;
+    public bool Alive { get; private set; }
     private bool _stunned;
     private float _stunTimer;
     private float _flashTimer;
@@ -41,7 +41,9 @@ public class PlayerInput : MonoBehaviour
     {
         _characterController = GetComponent<CharacterController>();
         _playerManager = GetComponent<PlayerManager>();
-		_sprite = GetComponent<SpriteRenderer> ();
+		
+
+        Alive = true;
     }
 
     protected void Start()
@@ -58,7 +60,7 @@ public class PlayerInput : MonoBehaviour
         if(_inputDevice.MenuWasPressed)
             PauseScreen.TogglePause();
 
-        if(!_alive) {
+        if(!Alive) {
             _characterController.SetDesiredSpeed(Vector2.zero);
             return;
         }
@@ -68,12 +70,12 @@ public class PlayerInput : MonoBehaviour
             _flashTimer += Time.deltaTime;
 
             if(_flashTimer >= 0.1f) {
-				_sprite.enabled = !_sprite.enabled;
+				DamageSprite.enabled = !DamageSprite.enabled;
                 _flashTimer = 0;
             }
 
             if(_stunTimer >= 3f) {
-				_sprite.enabled = true;
+				DamageSprite.enabled = true;
                 _stunned = false;
                 _stunTimer = 0;
                 _flashTimer = 0;
@@ -168,7 +170,7 @@ public class PlayerInput : MonoBehaviour
                 _characterController.SetDesiredSpeed(Vector2.zero);
                 RaycastHit2D hit = Physics2D.Raycast(transform.position, ExtinguisherRayCast.position-transform.position, 4f, 1 << 8);
                 if (hit.collider != null) {
-                    _sprite.enabled = true;
+                    DamageSprite.enabled = true;
 					hit.collider.gameObject.collider2D.enabled = false;
 					LeanTween.alpha(hit.collider.gameObject, 0, 0.5f);
                     Destroy(hit.collider.gameObject, 0.6f);
@@ -211,7 +213,7 @@ public class PlayerInput : MonoBehaviour
 
     private void GetStunned(Vector3 pos) {
 		rigidbody2D.AddForce (400 * (transform.position - pos));
-        _sprite.enabled = true;
+        DamageSprite.enabled = true;
 
         if(_stunned && _stunTimer >= 1f) {
             // die
@@ -223,10 +225,10 @@ public class PlayerInput : MonoBehaviour
     }
 
     private void Die() {
-        if(_alive)
+        if(Alive)
         {
             DieSound.Play();
-            _alive = false;
+            Alive = false;
             CloneBay.Instance.RespawnPlayer(this);
 
             // DROP IT LIKE ITS HOT
@@ -236,8 +238,8 @@ public class PlayerInput : MonoBehaviour
     }
 
     public void Respawn() {
-        _alive = true;
-        _sprite.enabled = true;
+        Alive = true;
+        DamageSprite.enabled = true;
         _stunTimer = 0;
         _flashTimer = 0;
     }

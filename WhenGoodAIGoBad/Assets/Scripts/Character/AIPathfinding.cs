@@ -53,7 +53,7 @@ public static class AIPathfinding
                 frontier.Add(next);
             }
         }
-	    return null;
+	    return new List<ITraversable>{startRoom};
 	}
 
     private static Room FindRoom(Vector3 position)

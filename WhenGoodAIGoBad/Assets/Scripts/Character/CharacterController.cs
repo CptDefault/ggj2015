@@ -124,7 +124,6 @@ public class CharacterController : MonoBehaviour
 
             _frameNumber %= a.Frames.Length;
             Renderer.sprite = a.Frames[_frameNumber];
-            print("Set frame " + _frameNumber + " : " + a.Frames[_frameNumber].name);
         }
 
     }

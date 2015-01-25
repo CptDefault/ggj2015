@@ -15,11 +15,16 @@ public class PlayerManager : MonoBehaviour
     private UILabel _tipLabel;
     public UILabel TipLabel { get {return _tipLabel;}}
 
+    public CharacterController Character { get; private set; }
+    public PlayerInput Input { get; private set; }
+
     public bool InDiningRoom;
 
     public void Awake () {
         if(_tipLabel == null)
             _tipLabel = (GameObject.Instantiate(TipPrefab) as GameObject).GetComponent<UILabel>();
+        Character = GetComponent<CharacterController>();
+        Input = GetComponent<PlayerInput>();
     }
 
     public void Update () {
