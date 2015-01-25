@@ -43,7 +43,7 @@ MonoBehaviour:
   mSprites:
   - name: buttonA
     x: 995
-    y: 940
+    y: 969
     width: 26
     height: 26
     borderLeft: 0
@@ -55,8 +55,8 @@ MonoBehaviour:
     paddingTop: 1
     paddingBottom: 1
   - name: buttonB
-    x: 898
-    y: 901
+    x: 995
+    y: 942
     width: 26
     height: 26
     borderLeft: 0
@@ -93,19 +93,6 @@ MonoBehaviour:
     paddingRight: 1
     paddingTop: 1
     paddingBottom: 0
-  - name: iconHolderRED
-    x: 995
-    y: 967
-    width: 28
-    height: 28
-    borderLeft: 0
-    borderRight: 0
-    borderTop: 0
-    borderBottom: 0
-    paddingLeft: 2
-    paddingRight: 2
-    paddingTop: 2
-    paddingBottom: 2
   - name: menuBG
     x: 0
     y: 512
